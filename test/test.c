@@ -9,6 +9,7 @@ int main()
 	keypad(stdscr,TRUE);
 	noecho();
 	int cur_x=0, cur_y=0, maxcur_x=80, maxcur_y=100;
+	mvprintw(LINES - 1, 0, "Line %d, Column %d", cur_y, cur_x);
 	for(;;){
 		move(cur_y,cur_x);
 		int ch = getch();
@@ -26,6 +27,10 @@ int main()
 			case KEY_RIGHT:
 				if(cur_x<maxcur_x) cur_x+=1;
 				break;
+			case KEY_DC :
+				cur_x-=1;
+				delch();
+				break;
 			default:
 				cur_x++;
 				if(cur_x==maxcur_x){
@@ -34,8 +39,11 @@ int main()
 				}
 				addch(ch | A_BOLD | A_UNDERLINE);
 				chgat(1, A_BOLD, 1, NULL);
+				mvprintw(LINES - 1, 0, "Line %d, Column %d", cur_y, cur_x);
 				break;
 		}
+		
+
 	}
 	refresh();			/* Print it on to the real screen */
 	endwin();			/* End curses mode		  */
