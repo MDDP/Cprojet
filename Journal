@@ -1,0 +1,9 @@
+8 Février:
+Objectif: Construire un éditeur de texte test où il est possible
+          d'écrire et de quitter.
+Travail: Familiarisation avec ncurses. 
+
+15 Février:
+Objectif: Ajout d'une fonctionnalité (encore primaire) permettant
+         de se déplacer avec les flèches dans l'éditeur de texte.
+Travail: Modélisation temporaire du projet et de sa structure.
