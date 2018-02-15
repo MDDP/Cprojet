@@ -4,4 +4,4 @@ test: test.o
 test.o: test.c
 	gcc -c test.c
 clean:
-	rm *~ *.o test
+	rm *~ *.o ._* test
