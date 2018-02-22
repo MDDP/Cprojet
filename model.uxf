@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>80</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>module Ncurse
+--
+Toutes les méthodes pour gérer
+l'affichage et les entrées au
+clavier.
+Défilement.
+Selection.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>360</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>module Buffer
+--
+En charge de la taille du buffer,
+chargement et sauvegarde.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>150</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>module Config
+--
+Paramètres (y compris ceux des
+raccourcis) et configuration.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>440</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>module Entrée
+--
+Gère les entrées au clavier et
+utilisation des raccourcis</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>250</x>
+      <y>30</y>
+      <w>380</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>Vue
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>680</x>
+      <y>90</y>
+      <w>350</w>
+      <h>510</h>
+    </coordinates>
+    <panel_attributes>Modèle
+--
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>230</x>
+      <y>390</y>
+      <w>340</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>Contrôle
+--
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
