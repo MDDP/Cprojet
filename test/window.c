@@ -18,13 +18,26 @@ int main(){
     bas = subwin(stdscr, 3 , COLS, LINES - 3, 0); // Créé la même fenêtre que ci-dessus sauf que les coordonnées changent
     box(bas, ACS_VLINE, ACS_HLINE);
     mvwprintw(bas, 1, 1, "Press # to exit. Line %d, Column %d", cur_x, cur_y);
-    
+
     wrefresh(haut);
     wrefresh(bas);
     
 	for(;;){
 		move(cur_y, cur_x);
 		int ch = getch();
+		if(ch == '*'){							//sauvegarde
+    		FILE *save=fopen("save.txt","w");	//crée un fichier save.txt qui va mettre
+    		putwin(haut,save);					//tout les caracteres introduit avec
+    		fclose(save);						//WPRINTW (ne marche pas avec addch chgat)
+    		break;
+		}
+		if(ch=='$'){							//charge le fichier save.txt
+			FILE *save=fopen("save.txt","r");
+			haut=getwin(save);
+    		fclose(save);
+    		wrefresh(haut);
+    		continue;
+		}
 		if(ch == '#') break;
 		switch(ch){
 			case KEY_UP:
@@ -48,10 +61,11 @@ int main(){
 			case KEY_DC :
 				delch();
 				break;
+			case 127:
             case KEY_BACKSPACE :
                 if(cur_x == 0 && cur_y > 0){     /* Reposition du curseur à la ligne précédente,  */  
                     cur_y -= 1;                  /* Pas encore de buffer donc on peut pas revenir */
-                                                 /* au dernier caractère de la ligne précédente   */   
+                   	cur_x = maxcur_x-1;			 /* au dernier caractère de la ligne précédente   */   
                 }
                 else
                     cur_x-=1;
@@ -64,9 +78,12 @@ int main(){
 				if(cur_x==maxcur_x){
 					cur_x=0;
 					cur_y++;
-                }	
+                }
+                /*	
 				addch(ch);
 				chgat(1, A_BOLD, 1, NULL);
+				*/
+				wprintw(haut,"%c",ch);
 				break;     
 		}
 		mvwprintw(bas, 1, 1, "Press # to exit. Line %d, Column %d", cur_x, cur_y);
