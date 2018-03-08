@@ -10,3 +10,21 @@ Objectif: Ajout d'une fonctionnalité (encore primaire) permettant
 Travail: Modélisation temporaire du projet et de sa structure.
 _________________________________________________________________
 
+22 Février:
+Objectif: Création d'une fenêtre secondaire et infrastructure
+		  du projet (modélisation)
+Travail: Modifications dans la modélisation, et documentation
+		 sur les fenêtres et le scrolling
+_________________________________________________________________
+
+1 Mars:
+Objectif: Scrolling et Buffer
+Travail: Création d'une fonction de scrolling et de
+		 sauvegarde/chargement. Réalisation d'une fenêtre
+		 secondaire.
+_________________________________________________________________
+
+8 Mars:
+Objectif: Raccourcis claviers, finir les fonctions principales
+		  du buffer.
+Travail: Scrolling, buffer.
