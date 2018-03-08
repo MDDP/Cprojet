@@ -11,13 +11,13 @@ int main(){
     
 	noecho();
     
-	int cur_x=0, cur_y=0, maxcur_x=80, maxcur_y=100;
-    haut = newwin(LINES - 4, COLS, 0, 0);
-    scrollok(stdscr, TRUE);
+	int cur_x=0, cur_y=3, maxcur_x=80, maxcur_y=100;
+    haut = newwin(LINES-3, COLS, 3, 0);
+    scrollok(haut, TRUE);
     //bas = newwin(3 , COLS, LINES - 3, 0); 
-    bas = subwin(stdscr, 3 , COLS, LINES - 3, 0); // Créé la même fenêtre que ci-dessus sauf que les coordonnées changent
+    bas = subwin(stdscr, 3 , COLS, 0, 0); // Créé la même fenêtre que ci-dessus sauf que les coordonnées changent
     box(bas, ACS_VLINE, ACS_HLINE);
-    mvwprintw(bas, 1, 1, "Press # to exit. Line %d, Column %d", cur_x, cur_y);
+    mvwprintw(bas, 1, 1, "Press # to exit. Line %d, Column %d", cur_y-3, cur_x);
 
     wrefresh(haut);
     wrefresh(bas);
@@ -32,7 +32,7 @@ int main(){
     		break;
 		}
 		if(ch=='$'){							//charge le fichier save.txt
-			FILE *save=fopen("save.txt","r");
+            FILE *save=fopen("save.txt","r");
 			haut=getwin(save);
     		fclose(save);
     		wrefresh(haut);
@@ -41,21 +41,34 @@ int main(){
 		if(ch == '#') break;
 		switch(ch){
 			case KEY_UP:
-				if(cur_y>0) cur_y-=1;
+				if(cur_y > 3) cur_y -= 1;
+                else if(cur_y == 3) wscrl(haut, -1);
 				break;
 			case KEY_DOWN:
-				if(cur_y<maxcur_y) cur_y+=1;
+				if(cur_y < maxcur_y) cur_y += 1;
+                if(cur_y-3 >= LINES-3){
+                    wscrl(haut, 1);
+                    move(LINES-1, cur_x);
+                }
 				break;
 			case KEY_LEFT:
-				if(cur_x>0) cur_x-=1;
+				if(cur_x > 0) cur_x -= 1;
+                if(cur_x == maxcur_x){
+                    cur_x = 0;
+                    cur_y++;
+                    move(cur_y, cur_x);
+                }
 				break;
 			case KEY_RIGHT:
 				if(cur_x<maxcur_x) cur_x+=1;
+                if(cur_x == 0) cur_y--;
 				break;
             case 10 :   /* Touche Entrée */
                 if(cur_y < maxcur_y) {
                     cur_x = 0;
                     cur_y += 1;
+                    move(LINES-1, cur_x);
+                    wprintw(haut, "%c", '\n');
                 }
                 break;
 			case KEY_DC :
@@ -74,19 +87,19 @@ int main(){
             case 410 :      /* Char qui apparait quand on redimensionne */
                 break;
 			default:
-				cur_x+=1;  
-				if(cur_x==maxcur_x){
+                if(cur_y < maxcur_y && cur_x==maxcur_x){
 					cur_x=0;
 					cur_y++;
                 }
-                /*	
-				addch(ch);
-				chgat(1, A_BOLD, 1, NULL);
-				*/
-				wprintw(haut,"%c",ch);
+                wmove(haut, cur_y-3, cur_x);
+				wprintw(haut, "%c",ch);
+                if(cur_x != COLS) cur_x+=1;
+                if(cur_y-3 >= LINES-3 && cur_x < maxcur_x) move(LINES-1, cur_x); /*Srolling du texte*/
 				break;     
 		}
-		mvwprintw(bas, 1, 1, "Press # to exit. Line %d, Column %d", cur_x, cur_y);
+        wclear(bas);
+        box(bas, ACS_VLINE, ACS_HLINE);
+		mvwprintw(bas, 1, 1, "Press # to exit. Line %d, Column %d", cur_y-3, cur_x);
         wrefresh(haut);
         wrefresh(bas);
 	}
