@@ -8,7 +8,9 @@ buffer *initialisation(int taille, int nombre);
 
 /*
  * Prend un caractère c en entrée et l'ajoute à la position au buffer buff si c'est possible.
- * Renvoie 1 si tout c'est bien passé, -1 en cas d'erreur.
+ * Renvoie 1 si on a juste ajouté un caratère
+ * 		   2 si on a dû passé à la ligne suivante
+ *		   3 si on a dû décaler le buffer d'une ligne
  */
 int ajout (char c, buffer *buff);
 
