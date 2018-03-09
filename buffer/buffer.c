@@ -3,8 +3,8 @@
 #include <stdio.h>
 
 //Fichiers 
-char *BUFF_AVANT = ".avant";
-char *BUFF_APRES = ".apres";
+char *BUFF_AVANT = "avant.buff";
+char *BUFF_APRES = "apres.buff";
 
 typedef struct buffer {
   char **contenu;
@@ -31,33 +31,39 @@ buffer *initialisation (int taille, int nombre) {
   return buff;
 }
 
-int decharger (int nlignes) {
-  //FILE *f = fopen(BUFF_AVANT, ")
-  return 0;
+int decharger (int n, buffer *buff) {
+  buff->lignes_dechar++;
+  FILE *f = fopen(BUFF_AVANT, "a");
+  char **contenu = buff->contenu;
+  //écriture des n lignes dans BUFF_AVANT
+  for (int i = 0; i < nl; i++) fwrite(*(contenu+i), 1, strlen(*(contenu+i), f);
+  //réalloue le bon nombre de lignes pour contenu
+  contenu = realloc(contenu+n, buff->nombre_lignes);
+  for (int i = buff->nombre_lignes - n; i < buff->nombre_lignes; i++) *(contenu+i) = (char*) malloc(buff->taille_ligne);
+  return 1;
 }
 
 int ajout (char c, buffer *buff) {
   char **contenu = buff->contenu;
+  int ret = 0;
   if (buff->cur_char < buff->taille_ligne) {
-    *(*(contenu + buff->cur_ligne) + buff->cur_char) = c;
-    return 1;
+    ret = 1;
   } else if (buff->cur_ligne < buff->nombre_lignes) {
+    //passage à la ligne suivante
     buff->cur_ligne++;
     buff->cur_char = 0;
-    *(*(contenu + buff->cur_ligne) + buff->cur_char) = c;
-    return 2;
+    ret = 2;
   } else {
-    decharger(1);
+    //On décharge une ligne et on redécale le curseur
+    if (!decharger(1, buff)) return 0;
     buff->cur_char = 0;
-    *(*(contenu + buff->cur_ligne) + buff->cur_char) = c;
-    return 3;
+    ret = 3;
   }
+  *(*(contenu + buff->cur_ligne) + buff->cur_char) = c;
+  return ret;
 }
 
-void test (char *texte, buffer *buff) {
+void print (buffer *buff) {
   char **contenu = buff->contenu;
-  for (int i = 0; i < buff->nombre_lignes; i++) {
-    strcpy(*(contenu+i),texte);
-    printf("%s\n",*(contenu+i));
-  }
+  for (int i = 0; i < buff->nombre_lignes; i++) printf("%s\n",*(contenu+i))
 }
