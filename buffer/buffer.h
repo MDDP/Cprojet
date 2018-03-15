@@ -7,10 +7,9 @@ typedef struct buffer buffer;
 buffer *initialisation(int taille, int nombre);
 
 /*
- * transfère n lignes du buffer dans le fichier BUFF_AVANT
- * les lignes suivantes sont décalées et on réalloue n lignes
+ * double la capacité du buffer
  */
-int decharger (int n, buffer *buff);
+int expand (buffer *buff);
 
 /*
  * Prend un caractère c en entrée et l'ajoute à la position au buffer buff si c'est possible.

@@ -6,4 +6,4 @@ test.o: test.c
 buffer.o: buffer.c buffer.h
 	gcc -c -g -Wall buffer.c
 clear:
-	rm *~ *.o test *.exe
+	rm *.o test *.exe
