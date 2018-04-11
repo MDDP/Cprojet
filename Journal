@@ -28,3 +28,13 @@ _________________________________________________________________
 Objectif: Raccourcis claviers, finir les fonctions principales
 		  du buffer.
 Travail: Scrolling, buffer.
+_________________________________________________________________
+
+29 Mars:
+Objectif : Mettre au point un buffer plus simple et efficace
+Travail: Tests sur la structure
+
+_________________________________________________________________
+5 Avril
+Objectif : Terminer les fonctions auxiliaires du buffer
+Travail : Sauvegarde et Chargement côté modèle
