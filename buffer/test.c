@@ -6,4 +6,5 @@ int main() {
   for (int i = 0; i < 25; i++) ecrire('a', buff);
   printf("Résultat:\n");
   print(buff);
+  sauvegarde(buff, "a");
 }

@@ -35,31 +35,39 @@ buffer *expand (buffer *buff) {
   return buff;
 }
 
+int sautligne (buffer *buff) {
+  char *contenu = buff->contenu;
+  int pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
+  *(contenu+pos) = '\n';
+  //passage à la ligne suivante
+  buff->cur_ligne++;
+  buff->cur_char = 0;
+  return pos;
+}
+
 int ecrire (char c, buffer *buff) {
   int pos;
   char *contenu = buff->contenu;
   int ret = 0;
-  if (buff->cur_char < buff->t_ligne-1) {
+  if (c == '\n') {
+    pos = sautligne(buff);
     ret = 1;
-  } else if (buff->cur_ligne < buff->nb_ligne) {
-    pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
-    *(contenu+pos) = '\n';
-    //passage à la ligne suivante
-    buff->cur_ligne++;
-    buff->cur_char = 0;
-    ret = 2;
   } else {
-    //double la capacité puis passe à la ligne suivante
-    expand(buff);
+    if (buff->cur_char < buff->t_ligne-1) {
+      ret = 1;
+    } else if (buff->cur_ligne < buff->nb_ligne) {
+      sautligne(buff);
+      ret = 2;
+    } else {
+      //double la capacité puis passe à la ligne suivante
+      expand(buff);
+      sautligne(buff);
+      ret = 3;
+    }
     pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
-    *(contenu+pos) = '\n';
-    buff->cur_ligne++;
-    buff->cur_char = 0;
-    ret = 3;
+    *(contenu+pos) = c;
+      buff->cur_char++;
   }
-  pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
-  *(contenu+pos) = c;
-  buff->cur_char++;
   if (pos > buff->dernier) buff->dernier = pos;
   return ret;
 }
@@ -68,4 +76,15 @@ void print (buffer *buff) {
   char *contenu = buff->contenu;
   *(contenu + buff->dernier + 1) = '\0';
   printf("%s\n", contenu);
+}
+
+int sauvegarde (buffer *buff, char *filename) {
+  FILE *f = fopen(filename, "w");
+  if (f != NULL) {
+    char *contenu = buff->contenu;
+    *(contenu + buff->dernier + 1) = '\0';
+    fprintf(f, "%s", contenu);
+    return 1;
+  } else
+    return 0;
 }
