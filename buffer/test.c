@@ -2,8 +2,8 @@
 #include "buffer.h"
 
 int main() {
-  buffer *buff = initialisation(1,5);
-  for (int i = 0; i < 100; i++) ajout('a', buff);
+  buffer *buff = initialisation(7,3);
+  for (int i = 0; i < 25; i++) ecrire('a', buff);
   printf("Résultat:\n");
   print(buff);
 }

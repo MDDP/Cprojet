@@ -3,65 +3,47 @@
 #include <stdio.h>
 
 typedef struct buffer {
-  char **contenu;
-  //indique la taille courante des lignes (permet de rajouter un '\0')
-  int *cur_taille;
-  //taille maximale d'une ligne
-  int taille_ligne;
-  //nombre de lignes dans la buffer
-  int nombre_lignes;
-  //ligne courante dans le buffer
+  char *contenu;
+  int nb_ligne;
+  int t_ligne;
   int cur_ligne;
-  //charactère courant dans le buffer
   int cur_char;
+  int dernier;
 } buffer;
 
-buffer *initialisation (int taille, int nombre) {
-  buffer *buff = (buffer *) malloc(sizeof(buffer));
-  //pour rajouter le \0
-  buff->taille_ligne = taille;
-  buff->nombre_lignes = nombre;
-  int *cur_t = (int *)malloc(sizeof(int)*nombre);
-  for (int i = 0; i < nombre; i++) *(cur_t + i) = 0;
-  buff->cur_taille = cur_t;
+buffer *initialisation (int tl, int nbl) {
+  buffer *buff = (buffer*)malloc(sizeof(buffer));
+  buff->nb_ligne = nbl;
+  //le +1 sert pour les retours à la ligne
+  buff->t_ligne = tl+1;
   buff->cur_ligne = 0;
   buff->cur_char = 0;
-  char **contenu = (char**)malloc(sizeof(char*)*nombre);
-  for (;nombre >= 0; nombre--){
-    *(contenu+nombre) = (char*)malloc(taille+1);
-  }
-  buff->contenu = contenu;
+  buff->dernier = 0;
+  char *contenu = (char*)malloc(nbl*(tl));
+  *contenu = '\0';
   return buff;
 }
 
-// NE MARCHE PAS SAIS PAS POURQUOIx
-int expand (buffer *buff) {
-  //int nouv_nombre = buff->nombre_lignes*2;
-  printf("d");
-  //char **contenu = buff->contenu;
-  printf("d");
-  //contenu = realloc(contenu, nouv_nombre);
-  printf("d");
-  //int *cur_taille = buff->cur_taille;
-  printf("d");
-  //cur_taille = realloc(cur_taille, nouv_nombre);
-  printf("d");
-  /*for (int i = buff->nombre_lignes; i < nouv_nombre; i++){
-    *(contenu+i) = (char*) malloc(buff->taille_ligne+1);
-    buff->cur_taille[i] = 0;
-  }*/
-  //buff->contenu = contenu;
-  //buff->cur_taille = cur_taille;
-  //buff->nombre_lignes = nouv_nombre;
-  return 1;
+void liberer (buffer *buff) {
+  free(buff->contenu);
+  free(buff);
 }
 
-int ajout (char c, buffer *buff) {
-  char **contenu = buff->contenu;
+buffer *expand (buffer *buff) {
+  buff->nb_ligne *= 2;
+  buff->contenu = (char*)realloc(buff->contenu, buff->nb_ligne);
+  return buff;
+}
+
+int ecrire (char c, buffer *buff) {
+  int pos;
+  char *contenu = buff->contenu;
   int ret = 0;
-  if (buff->cur_char < buff->taille_ligne) {
+  if (buff->cur_char < buff->t_ligne-1) {
     ret = 1;
-  } else if (buff->cur_ligne < buff->nombre_lignes) {
+  } else if (buff->cur_ligne < buff->nb_ligne) {
+    pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
+    *(contenu+pos) = '\n';
     //passage à la ligne suivante
     buff->cur_ligne++;
     buff->cur_char = 0;
@@ -69,19 +51,21 @@ int ajout (char c, buffer *buff) {
   } else {
     //double la capacité puis passe à la ligne suivante
     expand(buff);
-    //buff->cur_ligne++;
+    pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
+    *(contenu+pos) = '\n';
+    buff->cur_ligne++;
     buff->cur_char = 0;
     ret = 3;
   }
-  *(*(contenu + buff->cur_ligne) + buff->cur_char) = c;
+  pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
+  *(contenu+pos) = c;
   buff->cur_char++;
+  if (pos > buff->dernier) buff->dernier = pos;
   return ret;
 }
 
 void print (buffer *buff) {
-  char **contenu = buff->contenu;
-  for (int i = 0; i < buff->nombre_lignes; i++){
-    *(contenu+i)[(buff->cur_taille[i])] = '\0';
-    printf("l%d. %s\n", i,*(contenu+i));
-  }
+  char *contenu = buff->contenu;
+  *(contenu + buff->dernier + 1) = '\0';
+  printf("%s\n", contenu);
 }
