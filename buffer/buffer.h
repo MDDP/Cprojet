@@ -28,7 +28,14 @@ buffer *expand (buffer *buff);
 
 /*
  * Copie le contenu du buffer dans le fichier indiqué par filename
- * Renvoie 1 si la copie est effectuée
+ * Renvoie 1 si la copie est effectuée sans problème
  *		   0 en cas d'erreur
  */
 int sauvegarde (buffer *buff, char *filename);
+
+/*
+ * Copie le contenu du fichier indiqué par filename dans le buffer
+ * Renvoie 1 si la copie est effectuée sans problème
+ *		   0 en cas d'erreur
+ */
+int chargement (buffer *buff, char *filename);

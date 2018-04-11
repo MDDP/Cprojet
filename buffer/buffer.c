@@ -88,3 +88,16 @@ int sauvegarde (buffer *buff, char *filename) {
   } else
     return 0;
 }
+
+int chargement (buffer *buff, char *filename) {
+  FILE *f = fopen(filename, "r");
+  if (f != NULL) {
+    char c = fgetc(f);
+    while (c != EOF) {
+      ecrire(c, buff);
+      c = fgetc(f);
+    }
+    return 1;
+  } else
+    return 0;
+}
