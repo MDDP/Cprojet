@@ -3,11 +3,16 @@
 #include <stdio.h>
 
 typedef struct buffer {
+  //Représente le contenu du buffer
   char *contenu;
+  //Indique le nombre de "lignes"
   int nb_ligne;
+  //Indique la taille d'une "ligne
   int t_ligne;
+  //Indique la position courante dans le buffer
   int cur_ligne;
   int cur_char;
+  //Indique la position du dernier caractère dans contenu
   int dernier;
 } buffer;
 
@@ -56,6 +61,7 @@ int ecrire (char c, buffer *buff) {
     if (buff->cur_char < buff->t_ligne-1) {
       ret = 1;
     } else if (buff->cur_ligne < buff->nb_ligne) {
+      //Passe à la ligne
       sautligne(buff);
       ret = 2;
     } else {
