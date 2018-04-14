@@ -5,12 +5,13 @@
 typedef struct buffer {
   //Représente le contenu du buffer
   char *contenu;
+  //Indique la taille totale du buffer
+  int taille;
   //Indique le nombre de "lignes"
   int nb_ligne;
-  //Indique la taille d'une "ligne
+  //Indique la taille d'une "ligne"
   int t_ligne;
   //Indique la position courante dans le buffer
-  int cur_ligne;
   int cur_char;
   //Indique la position du dernier caractère dans contenu
   int dernier;
@@ -18,14 +19,12 @@ typedef struct buffer {
 
 buffer *initialisation (int tl, int nbl) {
   buffer *buff = (buffer*)malloc(sizeof(buffer));
+  buff->taille = tl*nbl;
   buff->nb_ligne = nbl;
-  //le +1 sert pour les retours à la ligne
-  buff->t_ligne = tl+1;
-  buff->cur_ligne = 0;
+  buff->t_ligne = tl;
   buff->cur_char = 0;
   buff->dernier = 0;
-  char *contenu = (char*)malloc(nbl*(tl));
-  *contenu = '\0';
+  buff->contenu = (char*)malloc(buff->taille);
   return buff;
 }
 
@@ -40,41 +39,19 @@ buffer *expand (buffer *buff) {
   return buff;
 }
 
-int sautligne (buffer *buff) {
-  char *contenu = buff->contenu;
-  int pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
-  *(contenu+pos) = '\n';
-  //passage à la ligne suivante
-  buff->cur_ligne++;
-  buff->cur_char = 0;
-  return pos;
-}
-
 int ecrire (char c, buffer *buff) {
-  int pos;
   char *contenu = buff->contenu;
   int ret = 0;
-  if (c == '\n') {
-    pos = sautligne(buff);
+  if (buff->cur_char < buff->taille) {
     ret = 1;
   } else {
-    if (buff->cur_char < buff->t_ligne-1) {
-      ret = 1;
-    } else if (buff->cur_ligne < buff->nb_ligne) {
-      //Passe à la ligne
-      sautligne(buff);
-      ret = 2;
-    } else {
-      //double la capacité puis passe à la ligne suivante
-      expand(buff);
-      sautligne(buff);
-      ret = 3;
-    }
-    pos = (buff->cur_ligne * buff->t_ligne) + buff->cur_char;
-    *(contenu+pos) = c;
-      buff->cur_char++;
+    //double la capacité puis écrit
+    expand(buff);
+    ret = 2;
   }
-  if (pos > buff->dernier) buff->dernier = pos;
+  *(contenu+ buff->cur_char) = c;
+  buff->cur_char++;
+  if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
   return ret;
 }
 
