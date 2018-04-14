@@ -7,8 +7,6 @@ typedef struct buffer {
   char *contenu;
   //Indique la taille totale du buffer
   int taille;
-  //Indique le nombre de "lignes"
-  int nb_ligne;
   //Indique la taille d'une "ligne"
   int t_ligne;
   //Indique la position courante dans le buffer
@@ -17,10 +15,9 @@ typedef struct buffer {
   int dernier;
 } buffer;
 
-buffer *initialisation (int tl, int nbl) {
+buffer *initialisation (int taille, int tl) {
   buffer *buff = (buffer*)malloc(sizeof(buffer));
-  buff->taille = tl*nbl;
-  buff->nb_ligne = nbl;
+  buff->taille = taille;
   buff->t_ligne = tl;
   buff->cur_char = 0;
   buff->dernier = 0;
@@ -34,8 +31,8 @@ void liberer (buffer *buff) {
 }
 
 buffer *expand (buffer *buff) {
-  buff->nb_ligne *= 2;
-  buff->contenu = (char*)realloc(buff->contenu, buff->nb_ligne);
+  buff->taille *= 2;
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille);
   return buff;
 }
 
@@ -67,6 +64,7 @@ int sauvegarde (buffer *buff, char *filename) {
     char *contenu = buff->contenu;
     *(contenu + buff->dernier + 1) = '\0';
     fprintf(f, "%s", contenu);
+    fclose(f);
     return 1;
   } else
     return 0;
@@ -80,6 +78,7 @@ int chargement (buffer *buff, char *filename) {
       ecrire(c, buff);
       c = fgetc(f);
     }
+    fclose(f);
     return 1;
   } else
     return 0;

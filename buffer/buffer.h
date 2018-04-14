@@ -1,10 +1,10 @@
 typedef struct buffer buffer;
 
 /*
- * Prend en argument une taille de ligne ainsi qu'un nombre de lignes
+ * Prend en argument une taille de buffer (nombre de caractère) et une taille de ligne
  * Renvoie un pointeur de buffer
  */
-buffer *initialisation(int tl, int nbl);
+buffer *initialisation(int taille, int tl);
 
 /*
  * Prend un caractère c en entrée et l'ajoute à la position courante du buffer si c'est possible.
