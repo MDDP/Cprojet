@@ -37,7 +37,7 @@ void liberer (buffer *buff) {
   free(buff);
 }
 
-void expand (buffer *buff) {
+void augmenter (buffer *buff) {
   buff->taille *= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
@@ -54,7 +54,7 @@ int ecrire (char c, buffer *buff) {
   int ret = 1;
   if (buff->cur_char >= buff->taille) {
     //double la capacité puis écrit
-    expand(buff);
+    augmenter(buff);
     ret = 2;
   }
   *(contenu+ buff->cur_char) = c;
@@ -67,7 +67,7 @@ int insertion (char c, buffer *buff) {
   char *contenu = buff->contenu;
   int ret = 1;
   if (buff->dernier == buff->taille-1) {
-    expand(buff);
+    augmenter(buff);
     ret = 2;
   }
   memmove(contenu+buff->cur_char+1, contenu+buff->cur_char, buff->dernier-buff->cur_char);

@@ -45,7 +45,7 @@ void liberer (buffer *buff);
 /*
  * Double la capacité du buffer
  */
-void expand (buffer *buff);
+void augmenter (buffer *buff);
 
 /*
  * Prend un caractère c en entrée et l'écrit à la position courante du buffer (en remplaçant le
