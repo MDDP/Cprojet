@@ -1,14 +1,12 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "buffer.h"
 
-typedef struct buffer {
+/*typedef struct buffer {
   char *contenu;
   int taille;
   int t_ligne;
   int cur_char;
   int dernier;
-} buffer;
+} buffer;*/
 
 buffer *initialisation (int taille, int tl) {
   buffer *buff = (buffer*)malloc(sizeof(buffer));
@@ -16,8 +14,7 @@ buffer *initialisation (int taille, int tl) {
   buff->t_ligne = tl;
   buff->cur_char = 0;
   buff->dernier = 0;
-  //On rajoute un octet supplémentaire pour
-  //pouvoir rajouter un '\0' dans la sauvegarde
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   buff->contenu = (char*)malloc(buff->taille+1);
   return buff;
 }
@@ -40,8 +37,14 @@ void liberer (buffer *buff) {
   free(buff);
 }
 
-void expand (buffer *buff) {
+void augmenter (buffer *buff) {
   buff->taille *= 2;
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+}
+
+void reduire (buffer *buff) {
+  buff->taille /= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
 }
@@ -51,7 +54,7 @@ int ecrire (char c, buffer *buff) {
   int ret = 1;
   if (buff->cur_char >= buff->taille) {
     //double la capacité puis écrit
-    expand(buff);
+    augmenter(buff);
     ret = 2;
   }
   *(contenu+ buff->cur_char) = c;
@@ -64,13 +67,22 @@ int insertion (char c, buffer *buff) {
   char *contenu = buff->contenu;
   int ret = 1;
   if (buff->dernier == buff->taille-1) {
-    expand(buff);
+    augmenter(buff);
     ret = 2;
   }
   memmove(contenu+buff->cur_char+1, contenu+buff->cur_char, buff->dernier-buff->cur_char);
   *(contenu+ buff->cur_char) = c;
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  return ret;
+}
+
+char supprimer (buffer *buff) {
+  char *contenu = buff->contenu;
+  char ret = *(contenu+buff->cur_char);
+  memmove(contenu+buff->cur_char, contenu+buff->cur_char+1, buff->dernier-buff->cur_char);
+  buff->dernier--;
+  if (buff->taille > 10 && buff->dernier < buff->taille/2) reduire(buff);
   return ret;
 }
 
@@ -86,7 +98,7 @@ int sauvegarde (buffer *buff, char *filename) {
     char *contenu = buff->contenu;
     //Rajout du '\0' pour écrire contenu dans f
     *(contenu + buff->dernier + 1) = '\0';
-    fputs(contenu, f);
+    fprintf(f, contenu);
     fclose(f);
     return 1;
   } else
@@ -107,18 +119,3 @@ int chargement (buffer *buff, char *filename) {
     return 0;
 }
 
-char *getContenu(buffer *buff) {
-  return buff->contenu;
-}
-
-int getTailleLigne(buffer *buff) {
-  return buff->t_ligne;
-}
-
-int getPosY(buffer *buff) {
-  return ((buff->cur_char+(buff->t_ligne-(buff->cur_char)))%buff->t_ligne)+1;
-}
-
-int getPosX(buffer *buff) {
-  return (buff->cur_char)%buff->t_ligne;
-}

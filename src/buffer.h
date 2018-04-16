@@ -1,3 +1,7 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
 /*
  * char *contenu; //Représente le contenu du buffer
  * int taille; //Indique la taille totale du buffer
@@ -5,7 +9,13 @@
  * int cur_char; //Indique la position courante dans le buffer
  * int dernier; //Indique la position du dernier caractère dans contenu
  */
-typedef struct buffer buffer;
+typedef struct buffer {
+  char *contenu;
+  int taille;
+  int t_ligne;
+  int cur_char;
+  int dernier;
+} buffer;
 
 /*
  * Prend en argument une taille de buffer (nombre de caractère) et une taille de ligne
@@ -33,6 +43,11 @@ int deplacerA (int n, buffer *buff);
 void liberer (buffer *buff);
 
 /*
+ * Double la capacité du buffer
+ */
+void augmenter (buffer *buff);
+
+/*
  * Prend un caractère c en entrée et l'écrit à la position courante du buffer (en remplaçant le
  * caractère précédent si il existe).
  * Renvoie 1 si on a juste écrit un caratère
@@ -49,14 +64,17 @@ int ecrire (char c, buffer *buff);
 int insertion (char c, buffer *buff);
 
 /*
+ * Supprime le caractère à la position courante dans le buffer et diminue la taille du buffer si elle
+ * a atteint la moitié
+ * Renvoie le caractère supprimé.
+ */
+char supprimer (buffer *buff);
+
+/*
  * Juste une fonction pour tester l'initialisation du buffer
  */
 void print (buffer *buff);
 
-/*
- * Double la capacité du buffer
- */
-void *expand (buffer *buff);
 
 /*
  * Copie le contenu du buffer dans le fichier indiqué par filename
@@ -71,23 +89,3 @@ int sauvegarde (buffer *buff, char *filename);
  *		   0 en cas d'erreur
  */
 int chargement (buffer *buff, char *filename);
-
-/*
- * Obtenir le contenu du buffer
- */
-char *getContenu(buffer *buff);
-
-/*
- * Obtenir la taille d'une ligne
- */
-int getTailleLigne(buffer *buff);
-
-/*
- * Calcule la position Y à la position actuelle du curseur
- */
-int getPosY(buffer *buff);
-
-/*
- * Calcule la position X à la position actuelle du curseur
- */
-int getPosX(buffer *buff);
