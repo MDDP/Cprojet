@@ -1,14 +1,12 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "buffer.h"
 
-typedef struct buffer {
+/*typedef struct buffer {
   char *contenu;
   int taille;
   int t_ligne;
   int cur_char;
   int dernier;
-} buffer;
+} buffer;*/
 
 buffer *initialisation (int taille, int tl) {
   buffer *buff = (buffer*)malloc(sizeof(buffer));

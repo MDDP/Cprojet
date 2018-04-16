@@ -1,3 +1,7 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
 /*
  * char *contenu; //Représente le contenu du buffer
  * int taille; //Indique la taille totale du buffer
@@ -5,7 +9,13 @@
  * int cur_char; //Indique la position courante dans le buffer
  * int dernier; //Indique la position du dernier caractère dans contenu
  */
-typedef struct buffer buffer;
+typedef struct buffer {
+  char *contenu;
+  int taille;
+  int t_ligne;
+  int cur_char;
+  int dernier;
+} buffer;
 
 /*
  * Prend en argument une taille de buffer (nombre de caractère) et une taille de ligne
@@ -56,7 +66,7 @@ void print (buffer *buff);
 /*
  * Double la capacité du buffer
  */
-void *expand (buffer *buff);
+void expand (buffer *buff);
 
 /*
  * Copie le contenu du buffer dans le fichier indiqué par filename
