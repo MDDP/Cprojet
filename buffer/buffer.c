@@ -3,15 +3,10 @@
 #include <stdio.h>
 
 typedef struct buffer {
-  //Représente le contenu du buffer
   char *contenu;
-  //Indique la taille totale du buffer
   int taille;
-  //Indique la taille d'une "ligne"
   int t_ligne;
-  //Indique la position courante dans le buffer
   int cur_char;
-  //Indique la position du dernier caractère dans contenu
   int dernier;
 } buffer;
 
@@ -21,8 +16,22 @@ buffer *initialisation (int taille, int tl) {
   buff->t_ligne = tl;
   buff->cur_char = 0;
   buff->dernier = 0;
-  buff->contenu = (char*)malloc(buff->taille);
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  buff->contenu = (char*)malloc(buff->taille+1);
   return buff;
+}
+
+int deplacer (int n, buffer *buff) {
+  if (buff->cur_char + n >= buff->taille || buff->cur_char + n < 0) return -1;
+  buff->cur_char += n;
+  return buff->cur_char;
+}
+
+int deplacerA (int n, buffer *buff) {
+  if (n < 0 || n >= buff->taille) return 0;
+  int dep = n - buff->cur_char;
+  buff->cur_char = n;
+  return dep;
 }
 
 void liberer (buffer *buff) {
@@ -30,22 +39,34 @@ void liberer (buffer *buff) {
   free(buff);
 }
 
-buffer *expand (buffer *buff) {
+void expand (buffer *buff) {
   buff->taille *= 2;
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille);
-  return buff;
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
 }
 
 int ecrire (char c, buffer *buff) {
   char *contenu = buff->contenu;
-  int ret = 0;
-  if (buff->cur_char < buff->taille) {
-    ret = 1;
-  } else {
+  int ret = 1;
+  if (buff->cur_char >= buff->taille) {
     //double la capacité puis écrit
     expand(buff);
     ret = 2;
   }
+  *(contenu+ buff->cur_char) = c;
+  buff->cur_char++;
+  if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  return ret;
+}
+
+int insertion (char c, buffer *buff) {
+  char *contenu = buff->contenu;
+  int ret = 1;
+  if (buff->dernier == buff->taille-1) {
+    expand(buff);
+    ret = 2;
+  }
+  memmove(contenu+buff->cur_char+1, contenu+buff->cur_char, buff->dernier-buff->cur_char);
   *(contenu+ buff->cur_char) = c;
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
@@ -62,8 +83,9 @@ int sauvegarde (buffer *buff, char *filename) {
   FILE *f = fopen(filename, "w");
   if (f != NULL) {
     char *contenu = buff->contenu;
+    //Rajout du '\0' pour écrire contenu dans f
     *(contenu + buff->dernier + 1) = '\0';
-    fprintf(f, "%s", contenu);
+    fprintf(f, contenu);
     fclose(f);
     return 1;
   } else
@@ -83,3 +105,4 @@ int chargement (buffer *buff, char *filename) {
   } else
     return 0;
 }
+
