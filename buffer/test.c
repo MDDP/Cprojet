@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "buffer.h"
 
 int main() {
@@ -6,7 +5,6 @@ int main() {
   for (int i = 0; i < 25; i++) ecrire('a', buff);
   printf("Résultat écrire:\n");
   print(buff);
-  
   
   deplacer(-1,buff);
   ecrire('b', buff);
@@ -32,5 +30,9 @@ int main() {
   print(buff);
   
   
+  deplacerA(0,buff);
+  supprimer(buff);
+  printf("Résultat supprimer:\n");
+  print(buff);
   return 0;
 }

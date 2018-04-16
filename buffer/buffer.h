@@ -43,6 +43,11 @@ int deplacerA (int n, buffer *buff);
 void liberer (buffer *buff);
 
 /*
+ * Double la capacité du buffer
+ */
+void expand (buffer *buff);
+
+/*
  * Prend un caractère c en entrée et l'écrit à la position courante du buffer (en remplaçant le
  * caractère précédent si il existe).
  * Renvoie 1 si on a juste écrit un caratère
@@ -59,14 +64,17 @@ int ecrire (char c, buffer *buff);
 int insertion (char c, buffer *buff);
 
 /*
+ * Supprime le caractère à la position courante dans le buffer et diminue la taille du buffer si elle
+ * a atteint la moitié
+ * Renvoie le caractère supprimé.
+ */
+char supprimer (buffer *buff);
+
+/*
  * Juste une fonction pour tester l'initialisation du buffer
  */
 void print (buffer *buff);
 
-/*
- * Double la capacité du buffer
- */
-void expand (buffer *buff);
 
 /*
  * Copie le contenu du buffer dans le fichier indiqué par filename

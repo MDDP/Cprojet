@@ -43,6 +43,12 @@ void expand (buffer *buff) {
   buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
 }
 
+void reduire (buffer *buff) {
+  buff->taille /= 2;
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+}
+
 int ecrire (char c, buffer *buff) {
   char *contenu = buff->contenu;
   int ret = 1;
@@ -68,6 +74,15 @@ int insertion (char c, buffer *buff) {
   *(contenu+ buff->cur_char) = c;
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  return ret;
+}
+
+char supprimer (buffer *buff) {
+  char *contenu = buff->contenu;
+  char ret = *(contenu+buff->cur_char);
+  memmove(contenu+buff->cur_char, contenu+buff->cur_char+1, buff->dernier-buff->cur_char);
+  buff->dernier--;
+  if (buff->taille > 10 && buff->dernier < buff->taille/2) reduire(buff);
   return ret;
 }
 
