@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#define NBCONFIG 6
-/*
- * NBCONFIG représente le nombre de raccourcis dans config.txt
- */
+#include "configuration.h"
 
 void actualiseConfig(char control[]){
   FILE *config=fopen("config.txt","r");
