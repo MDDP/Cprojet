@@ -9,3 +9,26 @@ void actualiseConfig (char control[]) {
   }
   fclose(config);
 }
+
+void sauvegardeConfig (char control[]) {
+  FILE *config = fopen("config.txt", "w");
+  fputs("'cpy':", config);
+  fputc(control[0], config);
+  fputc('\n', config);
+  fputs("'pst':", config);
+  fputc(control[1], config);
+  fputc('\n', config);
+  fputs("'cut':", config);
+  fputc(control[2], config);
+  fputc('\n', config);
+  fputs("'clr':", config);
+  fputc(control[3], config);
+  fputc('\n', config);
+  fputs("'men':", config);
+  fputc(control[4], config);
+  fputc('\n', config);
+  fputs("'rfs':", config);
+  fputc(control[5], config);
+  fputc('\n', config);
+  fclose(config);
+}

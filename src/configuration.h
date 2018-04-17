@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 /*
  * NBCONFIG représente le nombre de raccourcis dans config.txt
  */
@@ -11,4 +12,9 @@
  * est associée dans le fichier config.txt.
  * Le raccourci sera ensuite ctrl+lettre.
  */
-void actualiseConfig(char control[]);
+void actualiseConfig (char control[]);
+
+/*
+ * Sauvegarde les commandes actuelles dans config.txt
+ */
+void sauvegardeConfig (char control[]);
