@@ -119,3 +119,11 @@ int chargement (buffer *buff, char *filename) {
     return 0;
 }
 
+int getPosY(buffer *buff) {
+  return ((buff->cur_char+(buff->t_ligne-(buff->cur_char)))%buff->t_ligne)+1;
+}
+
+int getPosX(buffer *buff) {
+  return (buff->cur_char)%buff->t_ligne;
+}
+

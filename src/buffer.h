@@ -89,3 +89,13 @@ int sauvegarde (buffer *buff, char *filename);
  *		   0 en cas d'erreur
  */
 int chargement (buffer *buff, char *filename);
+
+/*
+ * Calcule la position Y à la position actuelle du curseur
+ */
+int getPosY(buffer *buff);
+
+/*
+ * Calcule la position X à la position actuelle du curseur
+ */
+int getPosX(buffer *buff);
