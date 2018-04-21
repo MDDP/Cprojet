@@ -2,4 +2,5 @@
 
 int main() {
   lancer();
+  return 0;
 }
