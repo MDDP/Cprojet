@@ -30,7 +30,7 @@ void lancer () {
   haut = subwin(stdscr, 3 , COLS, 0, 0);
   //Dessine les bordures de la fenêtre
   box(haut, ACS_VLINE, ACS_HLINE);
-  mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d", getPosY(buff), getPosX(buff));
+  mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d", buff, getPosX(buff));
   //Activer la molette de la souris dans la fenêtre écriture
   scrollok(bas, TRUE);
   //Actualise les deux fenêtres
@@ -92,7 +92,7 @@ void lancer () {
 */
     case KEY_LEFT:
       if(cur_x > 0) cur_x -= 1;
-      if(cur_x == getTailleLigne(buff)){
+      if(cur_x == buff->t_ligne){
 	cur_x = 0;
 	cur_y++;
 	move(cur_y, cur_x);
@@ -101,7 +101,7 @@ void lancer () {
       break;
       
     case KEY_RIGHT:
-      if(cur_x<getTailleLigne(buff)) cur_x+=1;
+      if(cur_x<buff->t_ligne) cur_x+=1;
       if(cur_x == 0) cur_y--;
       deplacer(1,buff);
       break;
@@ -123,7 +123,7 @@ void lancer () {
     case KEY_BACKSPACE :
       if(cur_x == 0 && cur_y > 0){   // Repodsition du curseur à la ligne précédente,
 	cur_y -= 1;                  // au dernier caractère de la ligne précédente
-	cur_x = getTailleLigne(buff)-1;	     // Pas encore fait
+	cur_x = buff->t_ligne-1;	     // Pas encore fait
       }
       else {
 	cur_x-=1;
@@ -140,7 +140,7 @@ void lancer () {
       cur_x+=1;
       wclear(bas);
       ecrire(ch, buff);
-      wprintw(bas, "%s", getContenu(buff));
+      wprintw(bas, "%s", buff->contenu);
       break;     
     }
     
@@ -156,5 +156,4 @@ void lancer () {
   free(haut);
   //Arrête le mode curses
   endwin();
-  return 0;
 }
