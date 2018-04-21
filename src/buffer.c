@@ -98,7 +98,7 @@ int sauvegarde (buffer *buff, char *filename) {
     char *contenu = buff->contenu;
     //Rajout du '\0' pour écrire contenu dans f
     *(contenu + buff->dernier + 1) = '\0';
-    fprintf(f, contenu);
+    fputs(contenu, f);
     fclose(f);
     return 1;
   } else
