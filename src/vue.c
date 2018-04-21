@@ -91,19 +91,23 @@ void lancer () {
       break;
 */
     case KEY_LEFT:
-      if(cur_x > 0) cur_x -= 1;
-      if(cur_x == buff->t_ligne){
-	cur_x = 0;
-	cur_y++;
-	move(cur_y, cur_x);
+      if(buff->cur_char>0){
+        if(cur_x > 0) cur_x -= 1;
+        if(cur_x == buff->t_ligne){
+	  cur_x = 0;
+	  cur_y++;
+	  move(cur_y, cur_x);
+        }
+        deplacer(-1,buff);
       }
-      deplacer(-1,buff);
       break;
       
     case KEY_RIGHT:
-      if(cur_x<buff->t_ligne) cur_x+=1;
-      if(cur_x == 0) cur_y--;
-      deplacer(1,buff);
+      if(buff->cur_char<buff->dernier){
+        if(cur_x<buff->t_ligne) cur_x+=1;
+        if(cur_x == 0) cur_y--;
+        deplacer(1,buff);
+      }
       break;
 
 /*    //Touche Entrée
@@ -121,17 +125,19 @@ void lancer () {
       
     case 127:
     case KEY_BACKSPACE :
-      if(cur_x == 0 && cur_y > 0){   // Repodsition du curseur à la ligne précédente,
-	cur_y -= 1;                  // au dernier caractère de la ligne précédente
-	cur_x = buff->t_ligne-1;	     // Pas encore fait
+      if(buff->cur_char>0){
+        if(cur_x == 0 && cur_y > 0){   // Reposition du curseur à la ligne précédente,
+	  cur_y -= 1;                  // au dernier caractère de la ligne précédente
+	  cur_x = buff->t_ligne-1;	     // Pas encore fait
+        }
+        else {
+	  cur_x-=1;
+	  deplacer(-1,buff);
+	  supprimer(buff);
+        }
+        wclear(bas);
+        wprintw(bas, "%s", buff->contenu);
       }
-      else {
-	cur_x-=1;
-	deplacer(-1,buff);
-	supprimer(buff);
-      }
-      wclear(bas);
-      wprintw(bas, "%s", buff->contenu);
       break;
       
     case 410 :      // Char qui apparait quand on redimensionne
