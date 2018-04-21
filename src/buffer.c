@@ -124,6 +124,6 @@ int getPosY(buffer *buff) {
 }
 
 int getPosX(buffer *buff) {
-  return (buff->cur_char)%buff->t_ligne;
+  return (buff->cur_char)%buff->t_ligne+1;
 }
 
