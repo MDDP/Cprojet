@@ -128,9 +128,10 @@ void lancer () {
       else {
 	cur_x-=1;
 	deplacer(-1,buff);
-	insertion('\0', buff);
-	deplacer(-1,buff);
+	supprimer(buff);
       }
+      wclear(bas);
+      wprintw(bas, "%s", buff->contenu);
       break;
       
     case 410 :      // Char qui apparait quand on redimensionne
@@ -146,7 +147,7 @@ void lancer () {
     
     wclear(haut);
     box(haut, ACS_VLINE, ACS_HLINE);
-    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d", getPosY(buff), getPosX(buff));
+    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d cur_x %d curchar %d", getPosY(buff), getPosX(buff), cur_x, buff->cur_char);
     wrefresh(haut);
     wrefresh(bas); 
   }
