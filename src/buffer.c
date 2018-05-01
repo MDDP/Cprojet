@@ -14,20 +14,49 @@ buffer *initialisation (int taille, int tl) {
   buff->t_ligne = tl;
   buff->cur_char = 0;
   buff->dernier = 0;
+  buff->posX = 0;
+  buff->posY = 0;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   buff->contenu = (char*)malloc(buff->taille+1);
   return buff;
 }
 
+void actualiserPos (char c, buffer *buff) {
+  if (c == '\n' || buff->posX == buff->t_ligne-1) {
+    buff->posX = 0;
+    buff->posY += 1;
+  } else
+    buff->posX += 1;
+}
+
+void actualiserPosDep (int n, buffer *buff) {
+  char *contenu = buff->contenu;
+  char cur;
+  int i;
+  if (n  < 0) {
+    buff->posX = 0;
+    buff->posY = 0;
+    i = 0;
+  } else {
+    i = buff->cur_char;
+  }
+  for (; i < buff->cur_char + n; i++) {
+    cur = *(contenu + i);
+    actualiserPos(cur, buff);
+  }
+}
+
 int deplacer (int n, buffer *buff) {
-  if (buff->cur_char + n >= buff->taille || buff->cur_char + n < 0) return -1;
+  if (buff->cur_char + n > buff->dernier || buff->cur_char + n < 0) return -1;
+  actualiserPosDep(n, buff);
   buff->cur_char += n;
   return buff->cur_char;
 }
 
 int deplacerA (int n, buffer *buff) {
-  if (n < 0 || n >= buff->taille) return 0;
+  if (n < 0 || n > buff->dernier) return 0;
   int dep = n - buff->cur_char;
+  actualiserPosDep(dep, buff);
   buff->cur_char = n;
   return dep;
 }
@@ -60,6 +89,7 @@ int ecrire (char c, buffer *buff) {
   *(contenu+ buff->cur_char) = c;
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  actualiserPos(c, buff);
   return ret;
 }
 
@@ -74,6 +104,7 @@ int insertion (char c, buffer *buff) {
   *(contenu+ buff->cur_char) = c;
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  actualiserPos(c, buff);
   return ret;
 }
 
@@ -97,7 +128,7 @@ int sauvegarde (buffer *buff, char *filename) {
   if (f != NULL) {
     char *contenu = buff->contenu;
     //Rajout du '\0' pour écrire contenu dans f
-    *(contenu + buff->dernier + 1) = '\0';
+    *(contenu + buff->dernier) = '\0';
     fputs(contenu, f);
     fclose(f);
     return 1;

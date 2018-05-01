@@ -3,11 +3,13 @@
 #include <stdio.h>
 
 /*
- * char *contenu; //Représente le contenu du buffer
- * int taille; //Indique la taille totale du buffer
- * int t_ligne;  //Indique la taille d'une "ligne"
- * int cur_char; //Indique la position courante dans le buffer
- * int dernier; //Indique la position du dernier caractère dans contenu
+ * char *contenu; 	//Représente le contenu du buffer
+ * int taille; 		//Indique la taille totale du buffer
+ * int t_ligne; 	//Indique la taille d'une "ligne"
+ * int cur_char; 	//Indique la position courante dans le buffer
+ * int dernier; 	//Indique la position du dernier caractère dans contenu
+ * int posX et posY;//Indiquent la position pour l'affichage.
+ *					Elle est actualisée à chaque fois que cur_char est modifié
  */
 typedef struct buffer {
   char *contenu;
@@ -15,6 +17,8 @@ typedef struct buffer {
   int t_ligne;
   int cur_char;
   int dernier;
+  int posX;
+  int posY;
 } buffer;
 
 /*
