@@ -103,7 +103,7 @@ int insertion (char c, buffer *buff) {
   memmove(contenu+buff->cur_char+1, contenu+buff->cur_char, buff->dernier-buff->cur_char);
   *(contenu+ buff->cur_char) = c;
   buff->cur_char++;
-  if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  buff->dernier += 1;
   actualiserPos(c, buff);
   return ret;
 }
