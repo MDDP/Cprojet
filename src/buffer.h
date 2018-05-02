@@ -5,7 +5,7 @@
 /*
  * char *contenu; 	//Représente le contenu du buffer
  * int taille; 		//Indique la taille totale du buffer
- * int t_ligne; 	//Indique la taille d'une "ligne"
+ * int t_ligne; 	//Indique la taille d'une "ligne" pour la vue
  * int cur_char; 	//Indique la position courante dans le buffer
  * int dernier; 	//Indique la position du dernier caractère dans contenu
  * int posX et posY;//Indiquent la position pour l'affichage.
