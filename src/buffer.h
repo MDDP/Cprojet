@@ -47,11 +47,6 @@ int deplacerA (int n, buffer *buff);
 void liberer (buffer *buff);
 
 /*
- * Double la capacité du buffer
- */
-void augmenter (buffer *buff);
-
-/*
  * Prend un caractère c en entrée et l'écrit à la position courante du buffer (en remplaçant le
  * caractère précédent si il existe).
  * Renvoie 1 si on a juste écrit un caratère

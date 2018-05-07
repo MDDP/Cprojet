@@ -1,13 +1,5 @@
 #include "buffer.h"
 
-/*typedef struct buffer {
-  char *contenu;
-  int taille;
-  int t_ligne;
-  int cur_char;
-  int dernier;
-} buffer;*/
-
 buffer *initialisation (int taille, int tl) {
   buffer *buff = (buffer*)malloc(sizeof(buffer));
   buff->taille = taille;
@@ -21,6 +13,7 @@ buffer *initialisation (int taille, int tl) {
   return buff;
 }
 
+//actualise la position pour la vue selon le char c
 void actualiserPos (char c, buffer *buff) {
   if (c == '\n' || buff->posX == buff->t_ligne-1) {
     buff->posX = 0;
@@ -29,11 +22,15 @@ void actualiserPos (char c, buffer *buff) {
     buff->posX += 1;
 }
 
+//permet d'actualiser la vue selon un déplacement de n caractères
+//un déplacement positif (avancement) ne fait qu'itérer actualiserPos jusqu'à arriver
+//à la position indiquée par buff.cur_char + n
+//un déplacement négatif force à recompter la position depuis le début du buffer
 void actualiserPosDep (int n, buffer *buff) {
   char *contenu = buff->contenu;
   char cur;
   int i;
-  if (n  < 0) {
+  if (n < 0) {
     buff->posX = 0;
     buff->posY = 0;
     i = 0;
@@ -66,12 +63,14 @@ void liberer (buffer *buff) {
   free(buff);
 }
 
+//Double la capacité du buffer
 void augmenter (buffer *buff) {
   buff->taille *= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
 }
 
+//Diminue de moitié la taille du buffer
 void reduire (buffer *buff) {
   buff->taille /= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
