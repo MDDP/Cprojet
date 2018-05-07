@@ -28,6 +28,11 @@ typedef struct buffer {
 buffer *initialisation(int taille, int tl);
 
 /*
+ * Libère l'espace mémoire alloué à contenu et à buff
+ */
+void liberer (buffer *buff);
+
+/*
  * Deplace la position courante de buff de n caractères.
  * Renvoie la position courante de buff.
  * 		   -1 si la position courante serait invalide après opération
@@ -42,9 +47,10 @@ int deplacer (int n, buffer *buff);
 int deplacerA (int n, buffer *buff);
 
 /*
- * Libère l'espace mémoire alloué à contenu et à buff
+ * Modifier la taille de la ligne dans buff en tl
+ * recalcule la position visuelle pour matcher la nouvelle taille de ligne
  */
-void liberer (buffer *buff);
+void modifierTaille (int tl, buffer *buff)
 
 /*
  * Prend un caractère c en entrée et l'écrit à la position courante du buffer (en remplaçant le

@@ -13,6 +13,25 @@ buffer *initialisation (int taille, int tl) {
   return buff;
 }
 
+void liberer (buffer *buff) {
+  free(buff->contenu);
+  free(buff);
+}
+
+//Double la capacité du buffer
+void augmenter (buffer *buff) {
+  buff->taille *= 2;
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+}
+
+//Diminue de moitié la taille du buffer
+void reduire (buffer *buff) {
+  buff->taille /= 2;
+  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+}
+
 //actualise la position pour la vue selon le char c
 void actualiserPos (char c, buffer *buff) {
   if (c == '\n' || buff->posX == buff->t_ligne-1) {
@@ -58,30 +77,20 @@ int deplacerA (int n, buffer *buff) {
   return dep;
 }
 
-void liberer (buffer *buff) {
-  free(buff->contenu);
-  free(buff);
-}
-
-//Double la capacité du buffer
-void augmenter (buffer *buff) {
-  buff->taille *= 2;
-  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
-}
-
-//Diminue de moitié la taille du buffer
-void reduire (buffer *buff) {
-  buff->taille /= 2;
-  //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+void modifierTaille (int tl, buffer *buff) {
+  buff->t_ligne = tl;
+  //On sauvegarde la curseur actuel puis on le remet à 0
+  int tmp = buff->cur_char;
+  buff->cur_char = 0;
+  //Et on utilise deplacer pour recalculer la position visuelle
+  deplacerA(n, buff);
 }
 
 int ecrire (char c, buffer *buff) {
   char *contenu = buff->contenu;
   int ret = 1;
   if (buff->cur_char >= buff->taille) {
-    //double la capacité puis écrit
+    //double la capacité puis écrit si on a atteint la taille maximale
     augmenter(buff);
     ret = 2;
   }
@@ -116,12 +125,6 @@ char supprimer (buffer *buff) {
   return ret;
 }
 
-void print (buffer *buff) {
-  char *contenu = buff->contenu;
-  *(contenu + buff->dernier + 1) = '\0';
-  printf("%s\n", contenu);
-}
-
 int sauvegarde (buffer *buff, char *filename) {
   FILE *f = fopen(filename, "w");
   if (f != NULL) {
@@ -149,6 +152,12 @@ int chargement (buffer *buff, char *filename) {
     return 0;
 }
 
+void print (buffer *buff) {
+  char *contenu = buff->contenu;
+  *(contenu + buff->dernier + 1) = '\0';
+  printf("%s\n", contenu);
+}
+
 int getPosY(buffer *buff) {
   return ((buff->cur_char+(buff->t_ligne-(buff->cur_char)))%buff->t_ligne)+1;
 }
@@ -156,4 +165,3 @@ int getPosY(buffer *buff) {
 int getPosX(buffer *buff) {
   return (buff->cur_char)%buff->t_ligne+1;
 }
-
