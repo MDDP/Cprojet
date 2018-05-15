@@ -12,23 +12,30 @@ void actualiseConfig (char control[]) {
 
 void sauvegardeConfig (char control[]) {
   FILE *config = fopen("config.txt", "w");
-  fputs("'cpy':", config);
+  fputs("'loa':", config);
   fputc(control[0], config);
   fputc('\n', config);
-  fputs("'pst':", config);
+  fputs("'sav':", config);
   fputc(control[1], config);
   fputc('\n', config);
-  fputs("'cut':", config);
+  fputs("'cpy':", config);
   fputc(control[2], config);
   fputc('\n', config);
-  fputs("'clr':", config);
+  fputs("'pst':", config);
   fputc(control[3], config);
   fputc('\n', config);
-  fputs("'men':", config);
+  fputs("'cut':", config);
   fputc(control[4], config);
   fputc('\n', config);
-  fputs("'rfs':", config);
+  fputs("'clr':", config);
   fputc(control[5], config);
   fputc('\n', config);
+  fputs("'rfs':", config);
+  fputc(control[6], config);
+  fputc('\n', config);
+  fputs("'men':", config);
+  fputc(control[7], config);
+  fputc('\n', config);
+  
   fclose(config);
 }

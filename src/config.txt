@@ -1,8 +1,8 @@
+'loa':l
+'sav':s
 'cpy':c
 'pst':v
 'cut':x
 'clr':a
-'men':e
 'rfs':r
-'sav':s
-'loa':l
+'men':e

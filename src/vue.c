@@ -36,61 +36,92 @@ void lancer () {
   //Actualise les deux fenêtres
   wrefresh(bas);
   wrefresh(haut);
-
+  int selection = -1;
   //Boucle principale
   for(;;){
     move(buff->posY+3, buff->posX);
     int ch = getch();
-    
     if(ch == '#') break;
-    
-    else if(ch == CTRL(control[0])){
-      wprintw(bas,"copy");
+
+    else if(ch == CTRL(control[7])){
+	selection = menu();
+	wclear(haut);
+	wclear(bas);
+	box(haut, ACS_VLINE, ACS_HLINE);
+      	mvwprintw(haut, 1, 1, "Menu loaded selection %d", selection);
+      	wrefresh(haut);
+	wprintw(bas, "%s", buff->contenu);
+	wrefresh(bas);
       continue;
     }
-    else if(ch == CTRL(control[1])){
-      wprintw(bas,"paste");
+    else if(ch == CTRL(control[0]) || selection == 0){
+	char *filename = "save.txt";
+	wclear(bas);
+	chargement(buff, filename);
+	wprintw(bas, "%s", buff->contenu);
+	wrefresh(bas);
+
+	wclear(haut);
+	box(haut, ACS_VLINE, ACS_HLINE);
+	mvwprintw(haut, 1, 1, "File loaded",filename);
+	wrefresh(haut);
+	selection = -1;
       continue;
     }
-    else if(ch == CTRL(control[2])){
-      wprintw(bas,"cut");
+    else if(ch == CTRL(control[1]) || selection == 1){
+	char *filename = "save.txt";
+	sauvegarde(buff, filename);
+
+	wclear(haut);
+	box(haut, ACS_VLINE, ACS_HLINE);
+	mvwprintw(haut, 1, 1, "File saved in %s",filename);
+	wrefresh(haut);
+	selection = -1;
       continue;
     }
-    else if(ch == CTRL(control[3])){
-      wprintw(bas,"clear");
+    else if(ch == CTRL(control[2]) || selection == 2){
+	wclear(haut);
+      	box(haut, ACS_VLINE, ACS_HLINE);
+      	mvwprintw(haut, 1, 1, "Copy");
+	wrefresh(haut);
+	selection = -1;
+      continue;
+    }
+    else if(ch == CTRL(control[3]) || selection == 3){
+	wclear(haut);
+      	box(haut, ACS_VLINE, ACS_HLINE);
+	mvwprintw(haut, 1, 1, "Paste");
+	wrefresh(haut);
+	selection = -1;
+      continue;
+    }
+    else if(ch == CTRL(control[4]) || selection == 4){
+	wclear(haut);
+      	box(haut, ACS_VLINE, ACS_HLINE);
+      	mvwprintw(haut, 1, 1, "Cut");
+	wrefresh(haut);
+	selection = -1;
+      continue;
+    }
+    else if(ch == CTRL(control[5]) || selection == 5){
+	wclear(haut);
+      	box(haut, ACS_VLINE, ACS_HLINE);
+      	mvwprintw(haut, 1, 1, "Clear");
+	wrefresh(haut);
+	move(buff->posY+3, 0);
+	clrtoeol();
+	selection = -1;
       continue;	
     }
-    else if(ch == CTRL(control[4])){
-      wprintw(bas,"menu");
+    else if(ch == CTRL(control[6]) || selection == 6){
+	wclear(haut);
+      	box(haut, ACS_VLINE, ACS_HLINE);
+    	mvwprintw(haut, 1, 1, "Refresh");
+     	wrefresh(haut);
+	selection = -1;
       continue;
     }
-    else if(ch == CTRL(control[5])){
-      wprintw(bas,"refresh");
-      continue;
-    }
-    else if(ch == CTRL(control[6])){
-      char *filename = "save.txt";
-      sauvegarde(buff, filename);
-
-      wclear(haut);
-      box(haut, ACS_VLINE, ACS_HLINE);
-      mvwprintw(haut, 1, 1, "File saved in %s",filename);
-      wrefresh(haut);
-      continue;
-    }
-    else if(ch == CTRL(control[7])){
-      char *filename = "save.txt";
-      wclear(bas);
-      chargement(buff, filename);
-      wprintw(bas, "%s", buff->contenu);
-      wrefresh(bas);
-      
-      wclear(haut);
-      box(haut, ACS_VLINE, ACS_HLINE);
-      mvwprintw(haut, 1, 1, "File loaded",filename);
-      wrefresh(haut);
-      continue;
-    }
+    
     switch(ch){
 
     case KEY_UP:
