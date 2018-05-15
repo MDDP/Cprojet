@@ -52,7 +52,7 @@ int deplacerA (int n, buffer *buff);
  * Modifier la taille de la ligne dans buff en tl et recalcule la
  * position visuelle pour matcher la nouvelle taille de ligne.
  */
-void modifierTaille (int tl, buffer *buff)
+void modifierTaille (int tl, buffer *buff);
 
 /*
  * Prend un caractère c en entrée et l'écrit à la position courante
