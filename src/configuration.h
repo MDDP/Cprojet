@@ -4,7 +4,7 @@
 /*
  * NBCONFIG représente le nombre de raccourcis dans config.txt
  */
-#define NBCONFIG 6
+#define NBCONFIG 8
 
 /*
  * Ouvre le fichier config.txt et attribut à
