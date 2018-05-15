@@ -157,10 +157,8 @@ void lancer () {
     wrefresh(haut);
     wrefresh(bas); 
   }
-
-  //Arrête et libère les fenêtres
-  free(bas);
-  free(haut);
+  //Libère le buffer
+  liberer(buff);
   //Arrête le mode curses
   endwin();
 }
