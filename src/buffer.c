@@ -79,11 +79,11 @@ int deplacerA (int n, buffer *buff) {
 
 void modifierTaille (int tl, buffer *buff) {
   buff->t_ligne = tl;
-  //On sauvegarde la curseur actuel puis on le remet à 0
+  //On sauvegarde la position actuelle du curseur puis on le remet à 0
   int tmp = buff->cur_char;
   buff->cur_char = 0;
   //Et on utilise deplacer pour recalculer la position visuelle
-  deplacerA(n, buff);
+  deplacerA(tmp, buff);
 }
 
 int ecrire (char c, buffer *buff) {
