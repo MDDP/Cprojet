@@ -79,7 +79,19 @@ void lancer () {
       continue;
     }
     else if(ch == CTRL(control[7])){
-      wprintw(bas,"load");
+      char *filename = "save.txt";
+      wclear(bas);
+      chargement(buff, filename);
+      wprintw(bas, "%s", buff->contenu);
+      wrefresh(bas);
+
+      cur_y = getPosY(buff) + 2;
+      cur_x = getPosX(buff) - 1;
+      
+      wclear(haut);
+      box(haut, ACS_VLINE, ACS_HLINE);
+      mvwprintw(haut, 1, 1, "File loaded",filename);
+      wrefresh(haut);
       continue;
     }
     switch(ch){
