@@ -12,14 +12,14 @@ void lancer () {
   //Activer les touches ctrl, alt...
   keypad(stdscr,TRUE);
 
-  int cur_x=0, cur_y=3;
+  int cur_x=0, cur_y=0;
   
   //Initialise les configurations
   char control[NBCONFIG];
   actualiseConfig(control);
 
   //Initialise le buffer
-  buffer *buff = initialisation(300,80);
+  buffer *buff = initialisation(3000,80);
   
   //Initialise les fenêtres d'affichage
   WINDOW *haut, *bas;
@@ -39,7 +39,7 @@ void lancer () {
 
   //Boucle principale
   for(;;){
-    move(cur_y,cur_x);
+    move(buff->posY+3, buff->posX);
     int ch = getch();
     
     if(ch == '#') break;
@@ -84,9 +84,6 @@ void lancer () {
       chargement(buff, filename);
       wprintw(bas, "%s", buff->contenu);
       wrefresh(bas);
-
-      cur_y = getPosY(buff) + 2;
-      cur_x = getPosX(buff) - 1;
       
       wclear(haut);
       box(haut, ACS_VLINE, ACS_HLINE);
@@ -95,65 +92,87 @@ void lancer () {
       continue;
     }
     switch(ch){
-/*
+
     case KEY_UP:
-      if(cur_y > 3) cur_y -= 1;
-      else if(cur_y == 3) wscrl(bas, -1);
+      if(buff->cur_char > 0){
+	int tmpX = buff->posX;
+	int tmpY = (buff->posY)-1;
+
+	while(buff->posY != tmpY){
+		if(buff->cur_char > 0){
+			deplacer(-1, buff);
+		}else{
+			deplacerA(0, buff);
+			break;
+		}
+	}
+
+	int tmpCur_char = buff->cur_char;
+
+	while(buff->posX != tmpX){
+		if(buff->posX > 0){
+			deplacer(-1, buff);
+		}else{
+			deplacerA(tmpCur_char, buff);
+			break;
+		}
+	}
+      }
+      //wscrl(bas, -1);
       break;
     case KEY_DOWN:
-      if(cur_y < maxcur_y) cur_y += 1;
-      if(cur_y-3 >= LINES-3){
-	wscrl(bas, 1);
-	move(LINES-1, cur_x);
+      if(buff->cur_char >= 0){
+	int tmpX = buff->posX;
+	int tmpY = (buff->posY)+1;
+	while(buff->posY != tmpY){
+		if(buff->cur_char < buff->dernier){
+			deplacer(1, buff);
+		}else{
+			deplacerA(buff->dernier, buff);
+			break;
+		}
+	}
+	
+	while(buff->posX != tmpX){
+		if(*(buff->contenu + (buff->cur_char)) != '\n' && buff->cur_char < buff->dernier){
+			deplacer(1, buff);
+		}else{
+			break;
+		}
+	}
       }
       break;
-*/
+
     case KEY_LEFT:
-      if(buff->cur_char>0){
-        if(cur_x > 0) cur_x -= 1;
-        if(cur_x == buff->t_ligne){
-	  cur_x = 0;
-	  cur_y++;
-	  move(cur_y, cur_x);
-        }
+      if(buff->cur_char > 0){
         deplacer(-1,buff);
       }
       break;
       
     case KEY_RIGHT:
-      if(buff->cur_char<buff->dernier){
-        if(cur_x<buff->t_ligne) cur_x+=1;
-        if(cur_x == 0) cur_y--;
+      if(buff->cur_char < buff->dernier){
         deplacer(1,buff);
       }
       break;
 
-/*    //Touche Entrée
+    //Touche Entrée
     case 10 :
-      if(cur_y < maxcur_y) {
-	cur_x = 0;
-	cur_y += 1;
-	move(LINES-1, cur_x);
-	wprintw(bas, "%c", '\n');
+      if(buff->posX < buff-> t_ligne) {
+	wclear(bas);
+      	ecrire('\n', buff);
+      	wprintw(bas, "%s", buff->contenu);
       }
       break;      
-*/
+
     case KEY_DC :
       break;
       
     case 127:
     case KEY_BACKSPACE :
-      if(buff->cur_char>0){
-        if(cur_x == 0 && cur_y > 0){   // Reposition du curseur à la ligne précédente,
-	  cur_y -= 1;                  // au dernier caractère de la ligne précédente
-	  cur_x = buff->t_ligne-1;	     // Pas encore fait
-        }
-        else {
-	  cur_x-=1;
-	  deplacer(-1,buff);
-	  supprimer(buff);
-        }
-        wclear(bas);
+      if(buff->cur_char > 0){
+	deplacer(-1,buff);
+	supprimer(buff);
+	wclear(bas);
         wprintw(bas, "%s", buff->contenu);
       }
       break;
@@ -162,16 +181,18 @@ void lancer () {
       break;
       
     default:
-      cur_x+=1;
       wclear(bas);
-      ecrire(ch, buff);
+      if(buff->cur_char < buff->dernier)
+	insertion(ch, buff);
+      else 
+     	ecrire(ch, buff);
       wprintw(bas, "%s", buff->contenu);
       break;     
     }
     
     wclear(haut);
     box(haut, ACS_VLINE, ACS_HLINE);
-    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d cur_x %d curchar %d", getPosY(buff), getPosX(buff), cur_x, buff->cur_char);
+    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d cur_y %d, curchar %d", buff->posY, buff->posX, cur_y, buff->cur_char);
     wrefresh(haut);
     wrefresh(bas); 
   }
