@@ -41,39 +41,45 @@ void lancer () {
   for(;;){
     move(cur_y,cur_x);
     int ch = getch();
+    
     if(ch == '#') break;
-    //Sauvegarde
-    if(ch == '*'){
-      //A mettre dans un control+lettre
-      continue;
-    }
-    //Charge
-    if(ch=='$'){							
-      //A mettre dans un control+lettre
-      continue;
-    }
-    if(ch == CTRL(control[0])){
+    
+    else if(ch == CTRL(control[0])){
       wprintw(bas,"copy");
       continue;
     }
-    if(ch == CTRL(control[1])){
+    else if(ch == CTRL(control[1])){
       wprintw(bas,"paste");
       continue;
     }
-    if(ch == CTRL(control[2])){
+    else if(ch == CTRL(control[2])){
       wprintw(bas,"cut");
       continue;
     }
-    if(ch == CTRL(control[3])){
+    else if(ch == CTRL(control[3])){
       wprintw(bas,"clear");
       continue;	
     }
-    if(ch == CTRL(control[4])){
+    else if(ch == CTRL(control[4])){
       wprintw(bas,"menu");
       continue;
     }
-    if(ch == CTRL(control[5])){
+    else if(ch == CTRL(control[5])){
       wprintw(bas,"refresh");
+      continue;
+    }
+    else if(ch == CTRL(control[6])){
+      char *filename = "save.txt";
+      sauvegarde(buff, filename);
+
+      wclear(haut);
+      box(haut, ACS_VLINE, ACS_HLINE);
+      mvwprintw(haut, 1, 1, "File saved in %s",filename);
+      wrefresh(haut);
+      continue;
+    }
+    else if(ch == CTRL(control[7])){
+      wprintw(bas,"load");
       continue;
     }
     switch(ch){
