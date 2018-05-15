@@ -1,6 +1,8 @@
 'cpy':c
-'pst':r
-'cut':v
+'pst':v
+'cut':x
 'clr':a
-'men':x
-'rfs':v
+'men':e
+'rfs':r
+'sav':s
+'loa':l
