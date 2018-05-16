@@ -22,14 +22,14 @@ void liberer (buffer *buff) {
 void augmenter (buffer *buff) {
   buff->taille *= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+2);
 }
 
 //Diminue de moitié la taille du buffer
 void reduire (buffer *buff) {
   buff->taille /= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+2);
 }
 
 //actualise la position pour la vue selon le char c
@@ -87,14 +87,13 @@ void modifierTaille (int tl, buffer *buff) {
 }
 
 int ecrire (char c, buffer *buff) {
-  char *contenu = buff->contenu;
   int ret = 1;
   if (buff->cur_char >= buff->taille) {
     //double la capacité puis écrit si on a atteint la taille maximale
     augmenter(buff);
     ret = 2;
   }
-  *(contenu+ buff->cur_char) = c;
+  *(buff->contenu+ buff->cur_char) = c;
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
   actualiserPos(c, buff);
