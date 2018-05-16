@@ -36,7 +36,12 @@ void lancer () {
   //Actualise les deux fenêtres
   wrefresh(bas);
   wrefresh(haut);
+  init_pair(1, COLOR_CYAN, COLOR_BLACK);
   int selection = -1;
+  int curChar = 0;
+  int first = 0;
+  char tmp [2048];
+  int index = 0;
   //Boucle principale
   for(;;){
     move(buff->posY+3, buff->posX);
@@ -84,6 +89,19 @@ void lancer () {
       	box(haut, ACS_VLINE, ACS_HLINE);
       	mvwprintw(haut, 1, 1, "Copy");
 	wrefresh(haut);
+	memset(&tmp[0], 0, sizeof(tmp));
+	index = 0;
+	int min = curChar;
+	int max	= buff->cur_char;
+	if(curChar > buff->cur_char){
+		max = curChar;
+		min = buff->cur_char;
+	}
+	while(min < max){
+		tmp[index] = *(buff->contenu + min);
+		min++;
+		index++;
+	}
 	selection = -1;
       continue;
     }
@@ -92,6 +110,17 @@ void lancer () {
       	box(haut, ACS_VLINE, ACS_HLINE);
 	mvwprintw(haut, 1, 1, "Paste");
 	wrefresh(haut);
+	wclear(bas);
+	for (int i = 0; i < strlen(tmp); i++){
+		if(tmp[i] == '\0'){
+			break;
+		}
+		else{
+			insertion(tmp[i], buff);
+		}
+	}
+	wprintw(bas, "%s", buff->contenu);
+	wrefresh(bas);
 	selection = -1;
       continue;
     }
@@ -100,6 +129,21 @@ void lancer () {
       	box(haut, ACS_VLINE, ACS_HLINE);
       	mvwprintw(haut, 1, 1, "Cut");
 	wrefresh(haut);
+	wclear(bas);
+	int min = curChar;
+	int max	= buff->cur_char;
+	if(curChar > buff->cur_char){
+		max = curChar;
+		min = buff->cur_char;
+		deplacerA(max, buff);
+	}
+	while(max > min){
+		deplacer(-1, buff);
+		supprimer(buff);
+		max--;
+	}
+	wprintw(bas, "%s", buff->contenu);
+	wrefresh(bas);
 	selection = -1;
       continue;
     }
@@ -108,8 +152,24 @@ void lancer () {
       	box(haut, ACS_VLINE, ACS_HLINE);
       	mvwprintw(haut, 1, 1, "Clear");
 	wrefresh(haut);
-	move(buff->posY+3, 0);
-	clrtoeol();
+	while(true){
+		if(!(*(buff->contenu + (buff->cur_char)) != '\n' && buff->cur_char < buff->dernier))
+			break;
+		deplacer(1, buff);
+		supprimer(buff);		
+	}
+	while(true){
+		if(buff->posX != 0 && buff->cur_char > 0){
+			deplacer(-1, buff);
+			supprimer(buff);
+		}
+		else{
+			break;
+		}
+	}
+	wclear(bas);
+	wprintw(bas, "%s", buff->contenu);
+	wrefresh(bas);
 	selection = -1;
       continue;	
     }
@@ -176,15 +236,45 @@ void lancer () {
 
     case KEY_LEFT:
       if(buff->cur_char > 0){
+	if(first == 1){
+		first = 0;
+		wclear(bas);
+		wprintw(bas, "%s", buff->contenu);	
+	}
         deplacer(-1,buff);
       }
       break;
       
     case KEY_RIGHT:
       if(buff->cur_char < buff->dernier){
+	if(first == 1){
+		first = 0;
+		wclear(bas);
+		wprintw(bas, "%s", buff->contenu);	
+	}
         deplacer(1,buff);
       }
       break;
+
+    case KEY_SRIGHT:
+	mvwchgat(bas, buff->posY, buff->posX, 1, A_STANDOUT, 1, NULL);
+	if(first == 0){
+		curChar = buff->cur_char;
+		first = 1;
+	}
+	deplacer(1,buff);
+	wrefresh(bas);
+	break;
+
+    case KEY_SLEFT:
+	mvwchgat(bas, buff->posY, buff->posX, 1, A_STANDOUT, 1, NULL);
+	if(first == 0){
+		curChar = buff->cur_char;
+		first = 1;
+	}
+	deplacer(-1,buff);
+	wrefresh(bas);
+	break;
 
     //Touche Entrée
     case 10 :
