@@ -1,15 +1,10 @@
-all: test test2 window
-test: test.o
-	gcc -lncurses -o test test.o
-test.o: test.c
-	gcc -c test.c
-test2: test2.o
-	gcc -lncurses -o test2 test2.o
-test2.o: test2.c
-	gcc -c test2.c
-window: window.o
-	gcc -lncurses -o window window.o
-window.o: window.c
-	gcc -c window.c
+all: buffertest
+buffertest: buffertest.o buffer.o
+	gcc -o buffertest buffertest.o buffer.o
+buffertest.o: buffertest.c
+	gcc -Wall -c buffertest.c
+buffer.o: ../src/buffer.c
+	gcc -Wall -c ../src/buffer.c
+
 clean:
-	rm *~ *.o ._* test test2
+	rm *.o buffertest
