@@ -9,8 +9,7 @@ buffer *initialisation (int taille, int tl) {
   buff->posX = 0;
   buff->posY = 0;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)malloc(buff->taille+1);
-  buff->contenu[0] = '\0';
+  buff->contenu = (char*)calloc(1, buff->taille+1);
   return buff;
 }
 
