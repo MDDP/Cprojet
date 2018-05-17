@@ -1,7 +1,11 @@
 #include "buffer.h"
 
 buffer *initialisation (int taille, int tl) {
-  if (taille <= 0 || tl <= 0) return NULL;
+  printf("allo?");
+  if (taille <= 0 || tl <= 0) {
+    printf("allo?");
+    return NULL;
+  } 
   buffer *buff = (buffer*)malloc(sizeof(buffer));
   buff->taille = taille;
   buff->t_ligne = tl;
@@ -165,12 +169,4 @@ void print (buffer *buff) {
   char *contenu = buff->contenu;
   *(contenu + buff->dernier + 1) = '\0';
   printf("%s\n", contenu);
-}
-
-int getPosY(buffer *buff) {
-  return ((buff->cur_char+(buff->t_ligne-(buff->cur_char)))%buff->t_ligne)+1;
-}
-
-int getPosX(buffer *buff) {
-  return (buff->cur_char)%buff->t_ligne+1;
 }
