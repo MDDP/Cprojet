@@ -40,10 +40,15 @@ void lancer () {
   int first = 0;
   char tmp [2048];
   int index = 0;
+  //taille de la ligne en fonction de la fenetre
+  if(COLS >= buff->t_ligne){
+	modifierTaille(COLS, buff);
+  }
   //Boucle principale
   for(;;){
     move(buff->posY+3, buff->posX);
     int ch = getch();
+    
     if(ch == '#') break;
 
     else if(ch == CTRL(control[7])){
