@@ -37,7 +37,7 @@ int menu(){
 	choice6[strlen(choice6)] = toupper(control[5]);
 	
 	char *choice7 = (char*)calloc(1, 21 * sizeof(char));
-	strcpy(choice7, "Refresh       CTRL-");
+	strcpy(choice7, "Edit          CTRL-");
 	choice7[strlen(choice7)] = toupper(control[6]);
 
 	char *choices[] = {
@@ -50,10 +50,21 @@ int menu(){
 		choice7,
         };
 
+	char *subChoices[] = {
+		"Load",
+		"Save",
+		"Copy",
+		"Paste",
+		"Cut",
+		"Clear",
+		"Edit config",
+		"Menu",
+	};
 	
 	initscr();
 	cbreak();
 	noecho();
+	raw();
 	keypad(stdscr, TRUE);
 
 	n_choices = ARRAY_SIZE(choices);
@@ -69,9 +80,9 @@ int menu(){
 	refresh();
 	int selection = -1;
 	for(;;){
-		
 		int c = getch();
 		if (c == 27){
+			selection = -1;
 			break;
 		}
 		else if (c == 10){
@@ -89,7 +100,75 @@ int menu(){
 					selection--;
 				menu_driver(my_menu, REQ_UP_ITEM);
 				break;
+		}
+	}
+	
+	if(selection == 6){
+		clear();
+		n_choices = ARRAY_SIZE(subChoices);
+		my_items = (ITEM **)calloc(n_choices+1, sizeof(ITEM *));
+
+		for(i = 0; i < n_choices; ++i)
+			my_items[i] = new_item(subChoices[i], "");
+		my_items[n_choices] = (ITEM *)NULL;
+
+		my_menu = new_menu((ITEM **)my_items);
+		mvprintw(LINES - 3, 0, "Select a command to edit");
+		mvprintw(LINES - 2, 0, "ESC to Exit Sub-Menu");
+		post_menu(my_menu);
+		refresh();
+		int subSelection = -1;
+		for(;;){
+			int c = getch();
 			
+			if (c == 27){
+				break;
+			}
+			else if (c == 10){
+				subSelection++;
+				break;
+			}
+			switch(c){
+				case KEY_DOWN:
+					if(subSelection < 6)
+						subSelection ++;
+					menu_driver(my_menu, REQ_DOWN_ITEM);
+					break;
+				case KEY_UP:
+					if(subSelection >= 0)
+						subSelection--;
+					menu_driver(my_menu, REQ_UP_ITEM);
+					break;
+		
+			}
+		}
+		int contains = 0;
+		if(subSelection != -1){
+			mvprintw(LINES - 2, 0, "Choice : %d | Next input is the new shortcut", subSelection);
+			refresh();
+			for(;;){
+				int c = getch();
+				for(int i = 0; i < strlen(control); i++){
+					if(c == control[i]){
+						mvprintw(LINES - 4, 0, "Already used");
+						contains = 1;
+						break;
+					}
+					else{
+						contains = 0;
+					}
+				}
+				if (c == 27){
+					break;
+				}
+				if(contains == 1){
+					continue;
+				}else{
+					control[subSelection] = c;
+					sauvegardeConfig(control);
+					break;
+				}
+			}
 		}
 	}
 	free(choice1);

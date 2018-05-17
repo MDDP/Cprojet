@@ -50,6 +50,7 @@ void lancer () {
 
     else if(ch == CTRL(control[7])){
 	selection = menu();
+	actualiseConfig(control);
 	wclear(haut);
 	wclear(bas);
 	box(haut, ACS_VLINE, ACS_HLINE);
@@ -57,6 +58,14 @@ void lancer () {
       	wrefresh(haut);
 	wprintw(bas, "%s", buff->contenu);
 	wrefresh(bas);
+      continue;
+    }
+    else if(ch == CTRL(control[6])){
+	wclear(haut);
+      	box(haut, ACS_VLINE, ACS_HLINE);
+    	mvwprintw(haut, 1, 1, "Refresh");
+     	wrefresh(haut);
+	selection = -1;
       continue;
     }
     else if(ch == CTRL(control[0]) || selection == 0){
@@ -130,18 +139,30 @@ void lancer () {
       	mvwprintw(haut, 1, 1, "Cut");
 	wrefresh(haut);
 	wclear(bas);
+    	memset(&tmp[0], 0, sizeof(tmp));
+	index = 0;
 	int min = curChar;
 	int max	= buff->cur_char;
+	int tmpmin = min;
 	if(curChar > buff->cur_char){
 		max = curChar;
 		min = buff->cur_char;
-		deplacerA(max, buff);
 	}
-	while(max > min){
+	
+	while(tmpmin < max){
+        	tmp[index] = *(buff->contenu + tmpmin);
+       		tmpmin++;
+		index++;
+	}
+
+	deplacerA(max, buff);
+
+	while(min < max){
 		deplacer(-1, buff);
 		supprimer(buff);
 		max--;
 	}
+    
 	wprintw(bas, "%s", buff->contenu);
 	wrefresh(bas);
 	selection = -1;
@@ -173,15 +194,7 @@ void lancer () {
 	selection = -1;
       continue;	
     }
-    else if(ch == CTRL(control[6]) || selection == 6){
-	wclear(haut);
-      	box(haut, ACS_VLINE, ACS_HLINE);
-    	mvwprintw(haut, 1, 1, "Refresh");
-     	wrefresh(haut);
-	selection = -1;
-      continue;
-    }
-    
+
     switch(ch){
 
     case KEY_UP:
@@ -313,9 +326,9 @@ void lancer () {
     
     wclear(haut);
     box(haut, ACS_VLINE, ACS_HLINE);
-    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d cur_y %d, curchar %d", buff->posY, buff->posX, cur_y, buff->cur_char);
+    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d cur_y %d, curchar %d, dernier %d" "control %c", buff->posY, buff->posX, cur_y, buff->cur_char, buff->dernier, control[3]);
     wrefresh(haut);
-    wrefresh(bas); 
+    wrefresh(bas);
   }
   //Libère le buffer
   liberer(buff);
