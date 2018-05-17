@@ -26,6 +26,7 @@ typedef struct buffer {
  * Prend en argument une taille de buffer (nombre de caractère) et une
  * taille de ligne.
  * Renvoie un pointeur de buffer.
+ * Renvoie NULL si les arguments sont incorrectes.
  */
 buffer *initialisation(int taille, int tl);
 

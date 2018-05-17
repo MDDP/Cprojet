@@ -1,6 +1,7 @@
 #include "buffer.h"
 
 buffer *initialisation (int taille, int tl) {
+  if (taille < 0 || tl < 0) return NULL;
   buffer *buff = (buffer*)malloc(sizeof(buffer));
   buff->taille = taille;
   buff->t_ligne = tl;
