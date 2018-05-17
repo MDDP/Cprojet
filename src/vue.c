@@ -11,8 +11,6 @@ void lancer () {
   noecho();
   //Activer les touches ctrl, alt...
   keypad(stdscr,TRUE);
-
-  int cur_x=0, cur_y=0;
   
   //Initialise les configurations
   char control[NBCONFIG];
@@ -69,7 +67,29 @@ void lancer () {
       continue;
     }
     else if(ch == CTRL(control[0]) || selection == 0){
-	char *filename = "save.txt";
+	char filename[50];
+        for(int i=0; i<49; i++) filename[i] = '\0';
+        int compteur = 0; 
+        while(compteur<49) {
+          wclear(haut);
+          box(haut, ACS_VLINE, ACS_HLINE);
+          mvwprintw(haut, 1, 1, "Enter file name: %s", filename);
+          move(1, 18+compteur);
+          wrefresh(haut);
+          int ch = getch();
+          if(ch == 10) {
+            filename[compteur] = '\0';
+            break;
+          }
+          else if((ch == 127 || ch == KEY_BACKSPACE) && compteur>0) {
+            compteur--;
+            filename[compteur] = '\0';
+          }
+          else {
+            filename[compteur] = ch;
+            compteur++;
+          }
+        }
 	wclear(bas);
 	chargement(buff, filename);
 	wprintw(bas, "%s", buff->contenu);
@@ -83,7 +103,29 @@ void lancer () {
       continue;
     }
     else if(ch == CTRL(control[1]) || selection == 1){
-	char *filename = "save.txt";
+	char filename[50];
+        for(int i=0; i<49; i++) filename[i] = '\0';
+        int compteur = 0; 
+        while(compteur<49) {
+          wclear(haut);
+          box(haut, ACS_VLINE, ACS_HLINE);
+          mvwprintw(haut, 1, 1, "Enter file name: %s", filename);
+          move(1, 18+compteur);
+          wrefresh(haut);
+          int ch = getch();
+          if(ch == 10) {
+            filename[compteur] = '\0';
+            break;
+          }
+          else if((ch == 127 || ch == KEY_BACKSPACE) && compteur>0) {
+            compteur--;
+            filename[compteur] = '\0';
+          }
+          else {
+            filename[compteur] = ch;
+            compteur++;
+          }
+        }
 	sauvegarde(buff, filename);
 
 	wclear(haut);
@@ -326,7 +368,7 @@ void lancer () {
     
     wclear(haut);
     box(haut, ACS_VLINE, ACS_HLINE);
-    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d cur_y %d, curchar %d, dernier %d" "control %c", buff->posY, buff->posX, cur_y, buff->cur_char, buff->dernier, control[3]);
+    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d, curchar %d, dernier %d" "control %c", buff->posY, buff->posX, buff->cur_char, buff->dernier, control[3]);
     wrefresh(haut);
     wrefresh(bas);
   }
