@@ -1,7 +1,4 @@
-#include <ctype.h>
-#include <string.h>
 #include "menu.h"
-#include "configuration.h"
 
 int menu(){
 	ITEM **my_items;			
