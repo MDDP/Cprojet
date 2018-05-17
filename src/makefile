@@ -12,4 +12,8 @@ VIlain: $(OBJS)
 	gcc -c -g -Wall $<
 
 clean:
+	rm *.o VIlain
+cleanAll:
 	rm *~ *.o ._* VIlain
+cleanSave:
+	rm *.txt

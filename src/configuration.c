@@ -1,7 +1,7 @@
 #include "configuration.h"
 
 void actualiseConfig (char control[]) {
-  FILE *config = fopen("config.txt","r");
+  FILE *config = fopen("config.cfg","r");
   for(int i = 0; i < NBCONFIG; i++){
     char line[9];
     fgets(line,9,config);
@@ -11,7 +11,7 @@ void actualiseConfig (char control[]) {
 }
 
 void sauvegardeConfig (char control[]) {
-  FILE *config = fopen("config.txt", "w");
+  FILE *config = fopen("config.cfg", "w");
   fputs("'loa':", config);
   fputc(control[0], config);
   fputc('\n', config);
