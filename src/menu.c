@@ -1,13 +1,12 @@
-#include "menu.h"
+#include <ctype.h>
 #include <string.h>
+#include "menu.h"
 #include "configuration.h"
 
 int menu(){
-	ITEM **my_items;
-	int c;				
+	ITEM **my_items;			
 	MENU *my_menu;
 	int n_choices, i;
-	ITEM *cur_item;
 	
 	char control[NBCONFIG];
 	actualiseConfig(control);
