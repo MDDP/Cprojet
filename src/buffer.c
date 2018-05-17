@@ -20,16 +20,21 @@ void liberer (buffer *buff) {
 
 //Double la capacité du buffer
 void augmenter (buffer *buff) {
-  buff->taille *= 2;
+  size_t oldSize = buff->taille;
+  size_t newSize = buff->taille * 2 + 1;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille+2);
+  buff->contenu = (char*)realloc(buff->contenu, newSize);
+  size_t diff = newSize - oldSize;
+  for(int i=0; i<diff; i++)
+    buff->contenu[oldSize + i] = '\0';
+  buff->taille *= 2;
 }
 
 //Diminue de moitié la taille du buffer
 void reduire (buffer *buff) {
   buff->taille /= 2;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
-  buff->contenu = (char*)realloc(buff->contenu, buff->taille+2);
+  buff->contenu = (char*)realloc(buff->contenu, buff->taille+1);
 }
 
 //actualise la position pour la vue selon le char c
