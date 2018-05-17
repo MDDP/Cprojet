@@ -1,11 +1,7 @@
 #include "buffer.h"
 
 buffer *initialisation (int taille, int tl) {
-  printf("allo?");
-  if (taille <= 0 || tl <= 0) {
-    printf("allo?");
-    return NULL;
-  } 
+  if (taille <= 0 || tl <= 0) return NULL;
   buffer *buff = (buffer*)malloc(sizeof(buffer));
   buff->taille = taille;
   buff->t_ligne = tl;
@@ -31,8 +27,8 @@ void liberer (buffer *buff) {
 //Double la capacité du buffer
 void augmenter (buffer *buff) {
   size_t oldSize = buff->taille;
-  size_t newSize = buff->taille * 2 + 1;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
+  size_t newSize = buff->taille * 2 + 1;
   buff->contenu = (char*)realloc(buff->contenu, newSize);
   size_t diff = newSize - oldSize;
   for(int i=0; i<diff; i++)
@@ -61,24 +57,25 @@ void actualiserPos (char c, buffer *buff) {
 //à la position indiquée par buff.cur_char + n
 //un déplacement négatif force à recompter la position depuis le début du buffer
 void actualiserPosDep (int n, buffer *buff) {
-  char *contenu = buff->contenu;
   char cur;
-  int i;
+  int i = 0;
+  
   if (n < 0) {
     buff->posX = 0;
     buff->posY = 0;
-    i = 0;
   } else {
     i = buff->cur_char;
   }
+  
   for (; i < buff->cur_char + n; i++) {
-    cur = *(contenu + i);
+    cur = *(buff->contenu + i);
     actualiserPos(cur, buff);
   }
 }
 
 int deplacer (int n, buffer *buff) {
   if (buff->cur_char + n > buff->dernier || buff->cur_char + n < 0) return -1;
+  //On recalcule la position pour la vue
   actualiserPosDep(n, buff);
   buff->cur_char += n;
   return buff->cur_char;
