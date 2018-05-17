@@ -101,14 +101,13 @@ int ecrire (char c, buffer *buff) {
 }
 
 int insertion (char c, buffer *buff) {
-  char *contenu = buff->contenu;
   int ret = 1;
   if (buff->dernier == buff->taille-1) {
     augmenter(buff);
     ret = 2;
   }
-  memmove(contenu+buff->cur_char+1, contenu+buff->cur_char, buff->dernier-buff->cur_char);
-  *(contenu+ buff->cur_char) = c;
+  memmove(buff->contenu+buff->cur_char+1, buff->contenu+buff->cur_char, buff->dernier-buff->cur_char);
+  *(buff->contenu+ buff->cur_char) = c;
   buff->cur_char++;
   buff->dernier += 1;
   actualiserPos(c, buff);
