@@ -1,7 +1,7 @@
 #include "buffer.h"
 
 buffer *initialisation (int taille, int tl) {
-  if (taille < 0 || tl < 0) return NULL;
+  if (taille <= 0 || tl <= 0) return NULL;
   buffer *buff = (buffer*)malloc(sizeof(buffer));
   buff->taille = taille;
   buff->t_ligne = tl;
@@ -11,6 +11,11 @@ buffer *initialisation (int taille, int tl) {
   buff->posY = 0;
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   buff->contenu = (char*)calloc(1, buff->taille+1);
+  //Dans le cas où l'allocation a foiré
+  if (buff->contenu == NULL) {
+    free(buff);
+    return NULL;
+  } 
   return buff;
 }
 
