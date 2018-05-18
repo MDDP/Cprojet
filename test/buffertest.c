@@ -236,6 +236,64 @@ START_TEST(test_inser_buff4)
 }
 END_TEST
 
+START_TEST(test_suppr_buff1)
+{
+  buffer * buff = initialisation(20,10);
+  supprimer(buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, "") == 0,
+		"Attendu : [%s], reçu: [%s]", "", buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_suppr_buff2)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Vige";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  deplacerA(2, buff);
+  supprimer(buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, "Vie") == 0,
+		"Attendu : [%s], reçu: [%s]", "Vie", buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_suppr_buff3)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Vige";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  supprimer(buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_suppr_buff4)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Vige";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  char ret = deplacerA(0, buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, "ige") == 0,
+		"Attendu : [%s], reçu: [%s] et [%c]", "ige", buff->contenu, ret
+	);
+}
+END_TEST
+
 Suite * buffer_suite(void)
 {
   Suite *s;
@@ -244,6 +302,7 @@ Suite * buffer_suite(void)
   TCase *tc_charg;
   TCase *tc_ecri;
   TCase *tc_inser;
+  TCase *tc_suppr;
 
   s = suite_create("Buffer");
 
@@ -270,18 +329,24 @@ Suite * buffer_suite(void)
   tcase_add_test(tc_ecri, test_ecri_buff3);
   
   tc_inser = tcase_create("Insertion");
-  tcase_add_test(tc_ecri, test_inser_buff1);
-  tcase_add_test(tc_ecri, test_inser_buff2);
-  tcase_add_test(tc_ecri, test_inser_buff3);
-  tcase_add_test(tc_ecri, test_inser_buff4);
+  tcase_add_test(tc_inser, test_inser_buff1);
+  tcase_add_test(tc_inser, test_inser_buff2);
+  tcase_add_test(tc_inser, test_inser_buff3);
+  tcase_add_test(tc_inser, test_inser_buff4);
+  
+  tc_suppr = tcase_create("Insertion");
+  tcase_add_test(tc_suppr, test_suppr_buff1);
+  tcase_add_test(tc_suppr, test_suppr_buff2);
+  tcase_add_test(tc_suppr, test_suppr_buff3);
+  tcase_add_test(tc_suppr, test_suppr_buff4);
   
   
-  //TODO ecire supprimer insertion
   suite_add_tcase(s, tc_init);
   suite_add_tcase(s, tc_charg);
   suite_add_tcase(s, tc_dep);
   suite_add_tcase(s, tc_ecri);
   suite_add_tcase(s, tc_inser);
+  suite_add_tcase(s, tc_suppr);
 
   return s;
 }
