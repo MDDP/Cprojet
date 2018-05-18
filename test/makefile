@@ -5,7 +5,7 @@ LDLIBS = -Wall $(shell pkg-config --libs check)
 
 all: buffertest
 
-buffertest: buffertest.o ../src/buffer.o
+buffertest: buffertest.o buffer.o
 
 %.o: %.c
 	gcc -c -g -Wall $<

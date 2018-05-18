@@ -1,5 +1,5 @@
 #include <check.h>
-#include "../src/buffer.h" // SUT
+#include "buffer.h" // SUT
 
 START_TEST(test_init_buff1)
 {
@@ -122,12 +122,128 @@ START_TEST(test_charg_buff2)
 }
 END_TEST
 
+START_TEST(test_ecri_buff1)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_ecri_buff2)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour, ceci est une phrase longue";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_ecri_buff3)
+{
+  buffer * buff = initialisation(60,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  deplacerA(0, buff);
+  aEcrire = "Au revoir";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff1)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff2)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  deplacerA(0, buff);
+  char *aEcrirebis = "Oh! Bonjour";
+  for (int i = 0; i < 4; i++)
+    insertion(*(aEcrirebis+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrirebis) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrirebis, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff3)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  char *aEcrirebis = "Bonjour, salut";
+  for (int i = 7; i < strlen(aEcrirebis); i++)
+    insertion(*(aEcrirebis+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrirebis) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrirebis, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff4)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Vige";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  deplacerA(2, buff);
+  char *aEcrirebis = "Viens à la plage";
+  for (int i = 2; i < 15; i++)
+    insertion(*(aEcrirebis+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrirebis) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrirebis, buff->contenu
+	);
+}
+END_TEST
+
 Suite * buffer_suite(void)
 {
   Suite *s;
   TCase *tc_init;
   TCase *tc_dep;
   TCase *tc_charg;
+  TCase *tc_ecri;
+  TCase *tc_inser;
 
   s = suite_create("Buffer");
 
@@ -135,7 +251,6 @@ Suite * buffer_suite(void)
   tcase_add_test(tc_init, test_init_buff1);
   tcase_add_test(tc_init, test_init_buff2);
   tcase_add_test(tc_init, test_init_buff3);
-
   
   tc_dep = tcase_create("Deplacement");
   tcase_add_test(tc_dep, test_dep_buff1);
@@ -145,13 +260,28 @@ Suite * buffer_suite(void)
   tcase_add_test(tc_dep, test_dep_buff5);
   tcase_add_test(tc_dep, test_dep_buff6);
 
-  tc_charg = tcase_create("Chargemetn");
+  tc_charg = tcase_create("Chargement");
   tcase_add_test(tc_charg, test_charg_buff1);
   tcase_add_test(tc_charg, test_charg_buff2);
   
+  tc_ecri = tcase_create("Ecriture");
+  tcase_add_test(tc_ecri, test_ecri_buff1);
+  tcase_add_test(tc_ecri, test_ecri_buff2);
+  tcase_add_test(tc_ecri, test_ecri_buff3);
+  
+  tc_inser = tcase_create("Insertion");
+  tcase_add_test(tc_ecri, test_inser_buff1);
+  tcase_add_test(tc_ecri, test_inser_buff2);
+  tcase_add_test(tc_ecri, test_inser_buff3);
+  tcase_add_test(tc_ecri, test_inser_buff4);
+  
+  
+  //TODO ecire supprimer insertion
   suite_add_tcase(s, tc_init);
   suite_add_tcase(s, tc_charg);
   suite_add_tcase(s, tc_dep);
+  suite_add_tcase(s, tc_ecri);
+  suite_add_tcase(s, tc_inser);
 
   return s;
 }
