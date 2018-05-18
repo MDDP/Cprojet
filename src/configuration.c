@@ -2,6 +2,11 @@
 
 void actualiseConfig (char control[]) {
   FILE *config = fopen("config.cfg","r");
+  //cas d'erreur
+  if (config == NULL) {
+     printf("Le fichier config.cdg est absent!")
+     return;
+  }
   for(int i = 0; i < NBCONFIG; i++){
     char line[9];
     fgets(line,9,config);
@@ -15,6 +20,8 @@ void sauvegardeConfig (char control[]) {
     for(int j=i+1; j<NBCONFIG; j++)
       if(control[i] == control[j]) return;
   FILE *config = fopen("config.cfg", "w");
+  //cas d'erreur
+  if (config == NULL) return;
   fputs("'loa':", config);
   fputc(control[0], config);
   fputc('\n', config);
