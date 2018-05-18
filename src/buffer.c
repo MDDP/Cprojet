@@ -100,13 +100,16 @@ void modifierTaille (int tl, buffer *buff) {
 int ecrire (char c, buffer *buff) {
   int ret = 1;
   if (buff->cur_char >= buff->taille) {
-    //double la capacité puis écrit si on a atteint la taille maximale
+    //double la capacité si on a atteint la taille maximale
     augmenter(buff);
     ret = 2;
   }
+  //ecrit le caractère la position courante
   *(buff->contenu+ buff->cur_char) = c;
+  //Puis avance et actualise la position du dernier caractère si nécessaire
   buff->cur_char++;
   if (buff->cur_char > buff->dernier) buff->dernier = buff->cur_char;
+  //on actualise aussi la position visuelle
   actualiserPos(c, buff);
   return ret;
 }
@@ -117,8 +120,10 @@ int insertion (char c, buffer *buff) {
     augmenter(buff);
     ret = 2;
   }
-  memmove(buff->contenu+buff->cur_char+1, buff->contenu+buff->cur_char, buff->dernier-buff->cur_char);
-  *(buff->contenu+ buff->cur_char) = c;
+  //de même qu'au dessus, sauf qu'on va déplacer la mémoire d'un octet
+  char *pointeur_tmp = buff->contenu+buff->cur_char;
+  memmove(pointeur_tmp+1, pointeur_tmp, buff->dernier-buff->cur_char);
+  *(pointeur_tmp) = c;
   buff->cur_char++;
   buff->dernier += 1;
   actualiserPos(c, buff);
