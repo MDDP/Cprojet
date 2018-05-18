@@ -30,9 +30,8 @@ void augmenter (buffer *buff) {
   //On rajoute un octet supplémentaire pour pouvoir rajouter un '\0' dans la sauvegarde
   size_t newSize = buff->taille * 2 + 1;
   buff->contenu = (char*)realloc(buff->contenu, newSize);
-  size_t diff = newSize - oldSize;
-  for(int i=0; i<diff; i++)
-    buff->contenu[oldSize + i] = '\0';
+  for(int i=oldSize; i<newSize; i++)
+    buff->contenu[i] = '\0';
   buff->taille *= 2;
 }
 
@@ -130,6 +129,7 @@ char supprimer (buffer *buff) {
   char *contenu = buff->contenu;
   char ret = *(contenu+buff->cur_char);
   memmove(contenu+buff->cur_char, contenu+buff->cur_char+1, buff->dernier-buff->cur_char);
+  contenu[buff->taille-1] = '\0';
   buff->dernier--;
   if (buff->taille > 10 && buff->dernier < buff->taille/2) reduire(buff);
   return ret;
