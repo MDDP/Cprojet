@@ -129,7 +129,7 @@ char supprimer (buffer *buff) {
   char *contenu = buff->contenu;
   char ret = *(contenu+buff->cur_char);
   memmove(contenu+buff->cur_char, contenu+buff->cur_char+1, buff->dernier-buff->cur_char);
-  contenu[buff->taille-1] = '\0';
+  contenu[buff->dernier] = '\0';
   buff->dernier--;
   if (buff->taille > 10 && buff->dernier < buff->taille/2) reduire(buff);
   return ret;
