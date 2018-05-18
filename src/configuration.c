@@ -11,6 +11,9 @@ void actualiseConfig (char control[]) {
 }
 
 void sauvegardeConfig (char control[]) {
+  for(int i=0; i<NBCONFIG-1; i++)
+    for(int j=i+1; j<NBCONFIG; j++)
+      if(control[i] == control[j]) return;
   FILE *config = fopen("config.cfg", "w");
   fputs("'loa':", config);
   fputc(control[0], config);
