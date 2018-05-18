@@ -1,10 +1,14 @@
+CC = gcc
+CFLAGS = -Wall
+LDFLAGS = $(CFLAGS)
+LDLIBS = -Wall $(shell pkg-config --libs check)
+
 all: buffertest
+
 buffertest: buffertest.o buffer.o
-	gcc -o buffertest buffertest.o buffer.o
-buffertest.o: buffertest.c
-	gcc -Wall -c buffertest.c
-buffer.o: ../src/buffer.c
-	gcc -Wall -c ../src/buffer.c
+
+%.o: %.c
+	gcc -c -g -Wall $<
 
 clean:
-	rm *.o buffertest
+	rm *.o main_test

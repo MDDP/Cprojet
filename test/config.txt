@@ -1,6 +1,0 @@
-'cpy':c
-'pst':v
-'cut':x
-'clr':d
-'men':n
-'rfs':r

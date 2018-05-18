@@ -1,141 +1,301 @@
-#include "../src/buffer.h" // SUT
+#include <check.h>
+#include "buffer.h" // SUT
 
-void serie1() {
-  buffer *buff = initialisation(60, 5);
-  printf("Buffer de taille %d, taille de ligne %d initialisé.\n", buff->taille, buff->t_ligne);
-  int n = 1;
+START_TEST(test_init_buff1)
+{
+  buffer * buff = initialisation(-1,12);
   
-  //cas normal
-  char* toEcrire = "a ecrire";
-  for (int i = 0; i < 8; i++)
-    ecrire(*(toEcrire+i), buff);
-  //permet le strcmp
-  ecrire('\0', buff);
-  printf("Test%d: [ecrire] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  int tmp = deplacer(-1, buff);
-  printf("Test%d: [deplacerA] Position attendu 8\nPosition reçue %d\n", n, tmp);
-  if (tmp == 8) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  //autre cas normal
-  toEcrire = " une phrase";
-  for (int i = 0; i < 11; i++)
-    ecrire(*(toEcrire+i), buff);
-  ecrire('\0', buff);
-  printf("Test%d: [ecrire] Contenu attendu: %s\ncontenu reçu: %s\n", n, "a ecrire une phrase", buff->contenu);
-  if (strcmp(buff->contenu, "a ecrire une phrase") == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  deplacerA(0, buff);
-  printf("Test%d: [deplacer] Position attendu 0\nPosition reçue %d\n", n, buff->cur_char);
-  if (buff->cur_char == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  //cas d'écrasement
-  toEcrire = "nouvelle phrase";
-  for (int i = 0; i < 15; i++)
-    ecrire(*(toEcrire+i), buff);
-  ecrire('\0', buff);
-  printf("Test%d: [ecrire] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  deplacerA(0, buff);
-  printf("Test%d: [deplacerA] Position attendu 0\nPosition reçue %d\n", n, buff->cur_char);
-  if (buff->cur_char == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  //cas normal de suppression
-  toEcrire = "ouvelle phrase";
-  supprimer(buff);
-  printf("Test%d: [supprimer] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  tmp = deplacer(4, buff);
-  printf("Test%d: [deplacer] Position attendu 4\nPosition reçue %d\n", n, tmp);
-  if (tmp == 4) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  //autre cas normal
-  toEcrire = "ouvele phrase";
-  supprimer(buff);
-  printf("Test%d: [supprimer] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  liberer(buff);
-  printf("Buffer libéré\n\n");
+	ck_assert_msg (buff == NULL, "On attendait NULL.");
 }
+END_TEST
 
-void serie2 () {
-  buffer *buff = initialisation(20, 10);
-  printf("Buffer de taille %d, taille de ligne %d initialisé.\n", buff->taille, buff->t_ligne);
-  int n = 1;
+START_TEST(test_init_buff2)
+{
+  buffer * buff = initialisation(20,0);
   
-  //cas normal
-  char* toEcrire = "Ceci est une phrase.";
-  for (int i = 0; i < 20; i++)
-    ecrire(*(toEcrire+i), buff);
-  *(buff->contenu+20) = '\0';
-  printf("Test%d: [ecrire] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  deplacerA(19, buff);
-  //cas normal de suppression
-  toEcrire = "Ceci est une phrase";
-  supprimer(buff);
-  printf("Test%d: [supprimer] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  //cas d'écriture après suppression
-  toEcrire = "Ceci est une phrase??";
-  ecrire('?', buff);
-  ecrire('?', buff);
-  *(buff->contenu+21) = '\0';
-  printf("Test%d: [ecrire] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
-  
-  //Autre cas de suppression
+	ck_assert_msg (buff == NULL, "On attendait NULL.");
+}
+END_TEST
+
+START_TEST(test_init_buff3)
+{
+  buffer * buff = initialisation(60,10);
+
+	ck_assert_msg (buff != NULL && buff->taille == 60, "On attendait un buffer initialisé vide de taille 60");
+}
+END_TEST
+
+START_TEST(test_dep_buff1)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
   deplacerA(0, buff);
-  toEcrire = "ci est une phrase??";
-  supprimer(buff);
-  supprimer(buff);
-  printf("Test%d: [supprimer] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
+	ck_assert_msg (
+		buff->cur_char == 0 && buff->posX == 0 && buff->posY == 0,
+		"Attendu: 0 0 0, reçu: %d %d %d", buff->cur_char, buff->posX, buff->posY
+	);
+}
+END_TEST
+
+START_TEST(test_dep_buff2)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
+  deplacerA(0,buff);
+  deplacer(15, buff);
+  ck_assert_msg (
+		buff->cur_char == 15 && buff->posX == 5 && buff->posY == 1,
+		"Attendu: 10 5 1, reçu: %d %d %d", buff->cur_char, buff->posX, buff->posY
+	);
+}
+END_TEST
+
+START_TEST(test_dep_buff3)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
+  deplacerA(10,buff);
+  deplacer(-5, buff);
+	ck_assert_msg (
+		buff->cur_char == 5 && buff->posX == 5 && buff->posY == 0,
+		"Attendu: 10 5 1, reçu: %d %d %d", buff->cur_char, buff->posX, buff->posY
+	);
+}
+END_TEST
+
+START_TEST(test_dep_buff4)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
+  int tmp = deplacer(1, buff);
+	ck_assert_msg (
+		buff->cur_char == 51 && buff->posX == 3 && buff->posY == 5 && tmp == -1,
+		"Attendu: -1 et buffer inchangé, reçu: %d", tmp
+	);
+}
+END_TEST
+
+START_TEST(test_dep_buff5)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
+  int tmp = deplacer(-60, buff);
+	ck_assert_msg (
+		buff->cur_char == 51 && buff->posX == 3 && buff->posY == 5 && tmp == -1,
+		"Attendu: -1 et buffer inchangé, reçu: %d", tmp
+	);
+}
+END_TEST
+
+START_TEST(test_dep_buff6)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
+  int tmp = deplacerA(-1, buff);
+	ck_assert_msg (
+		buff->cur_char == 51 && buff->posX == 3 && buff->posY == 5 && tmp == 0,
+		"Attendu: 0, reçu: %d", tmp
+	);
+}
+END_TEST
+
+START_TEST(test_charg_buff1)
+{
+  buffer * buff = initialisation(60,10);
+  chargement(buff, "test.txt");
+	ck_assert_msg (
+		strcmp(buff->contenu, "Ceci est un fichier de test\nJuste hsitoire de voire") == 0,
+		"Fichier mal lu"
+	);
+}
+END_TEST
+
+START_TEST(test_charg_buff2)
+{
+  buffer * buff = initialisation(60,10);
+  int i = chargement(buff, "tes.txt");
   
-  //cas normal d'insertion
+	ck_assert_msg (
+		i == 0,
+		"N'est pas sensé lire"
+	);
+}
+END_TEST
+
+START_TEST(test_ecri_buff1)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_ecri_buff2)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour, ceci est une phrase longue";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_ecri_buff3)
+{
+  buffer * buff = initialisation(60,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
   deplacerA(0, buff);
-  toEcrire = "Ceci est une phrase??";
-  insertion('C', buff);
-  insertion('e', buff);
-  printf("Test%d: [insertion] Contenu attendu: %s\ncontenu reçu: %s\n", n, toEcrire, buff->contenu);
-  if (strcmp(buff->contenu, toEcrire) == 0) printf("Test passé\n\n");
-  else printf("Test échoué\n\n");
-  n++;
+  aEcrire = "Au revoir";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    ecrire(*(aEcrire+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff1)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrire) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrire, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff2)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  deplacerA(0, buff);
+  char *aEcrirebis = "Oh! Bonjour";
+  for (int i = 0; i < 4; i++)
+    insertion(*(aEcrirebis+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrirebis) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrirebis, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff3)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Bonjour";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  char *aEcrirebis = "Bonjour, salut";
+  for (int i = 7; i < strlen(aEcrirebis); i++)
+    insertion(*(aEcrirebis+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrirebis) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrirebis, buff->contenu
+	);
+}
+END_TEST
+
+START_TEST(test_inser_buff4)
+{
+  buffer * buff = initialisation(20,10);
+  char *aEcrire = "Vige";
+  for (int i = 0; i < strlen(aEcrire); i++)
+    insertion(*(aEcrire+i), buff);
+  deplacerA(2, buff);
+  char *aEcrirebis = "Viens à la plage";
+  for (int i = 2; i < 15; i++)
+    insertion(*(aEcrirebis+i), buff);
+  
+	ck_assert_msg (
+		strcmp(buff->contenu, aEcrirebis) == 0,
+		"Attendu : [%s], reçu: [%s]", aEcrirebis, buff->contenu
+	);
+}
+END_TEST
+
+Suite * buffer_suite(void)
+{
+  Suite *s;
+  TCase *tc_init;
+  TCase *tc_dep;
+  TCase *tc_charg;
+  TCase *tc_ecri;
+  TCase *tc_inser;
+
+  s = suite_create("Buffer");
+
+  tc_init = tcase_create("Intialisation");
+  tcase_add_test(tc_init, test_init_buff1);
+  tcase_add_test(tc_init, test_init_buff2);
+  tcase_add_test(tc_init, test_init_buff3);
+  
+  tc_dep = tcase_create("Deplacement");
+  tcase_add_test(tc_dep, test_dep_buff1);
+  tcase_add_test(tc_dep, test_dep_buff2);
+  tcase_add_test(tc_dep, test_dep_buff3);
+  tcase_add_test(tc_dep, test_dep_buff4);
+  tcase_add_test(tc_dep, test_dep_buff5);
+  tcase_add_test(tc_dep, test_dep_buff6);
+
+  tc_charg = tcase_create("Chargement");
+  tcase_add_test(tc_charg, test_charg_buff1);
+  tcase_add_test(tc_charg, test_charg_buff2);
+  
+  tc_ecri = tcase_create("Ecriture");
+  tcase_add_test(tc_ecri, test_ecri_buff1);
+  tcase_add_test(tc_ecri, test_ecri_buff2);
+  tcase_add_test(tc_ecri, test_ecri_buff3);
+  
+  tc_inser = tcase_create("Insertion");
+  tcase_add_test(tc_ecri, test_inser_buff1);
+  tcase_add_test(tc_ecri, test_inser_buff2);
+  tcase_add_test(tc_ecri, test_inser_buff3);
+  tcase_add_test(tc_ecri, test_inser_buff4);
+  
+  
+  //TODO ecire supprimer insertion
+  suite_add_tcase(s, tc_init);
+  suite_add_tcase(s, tc_charg);
+  suite_add_tcase(s, tc_dep);
+  suite_add_tcase(s, tc_ecri);
+  suite_add_tcase(s, tc_inser);
+
+  return s;
 }
 
 int main () {
-  serie1();
-  serie2();
+  int number_failed;
+  Suite *s;
+  SRunner *sr;
+
+  s = buffer_suite();
+  sr = srunner_create(s);
+
+  srunner_run_all(sr, CK_NORMAL);
+  number_failed = srunner_ntests_failed(sr);
+  srunner_free(sr);
+  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
