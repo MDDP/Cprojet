@@ -4,12 +4,14 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>290</x>
-      <y>460</y>
+      <x>250</x>
+      <y>410</y>
       <w>210</w>
-      <h>190</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>module Vue
+--
+Utilise NCurses
 --
 Toutes les méthodes pour gérer
 l'affichage et les entrées au
@@ -21,34 +23,33 @@ Selection.</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>670</x>
-      <y>460</y>
+      <x>650</x>
+      <y>410</y>
       <w>210</w>
-      <h>190</h>
+      <h>150</h>
     </coordinates>
     <panel_attributes>style=wordwrap
-Buffer.c
+module Buffer
 --
 struct buffer
-Contient les informations et le contenu.
+Contient les informations sur le buffer et son contenu.
 --
 Fonctions liées au Buffer:
-Sauvegarde, chargement, écriture et initialisation.</panel_attributes>
+Sauvegarde, chargement, déplacement, écriture et initialisation.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>670</x>
-      <y>160</y>
+      <x>650</x>
+      <y>220</y>
       <w>210</w>
-      <h>190</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>style=wordwrap
-Configuration.c
+module Configuration
 --
 Raccourcis clavier
-Options de line wrapping
 --
 Fonctions permettant de configurer le Buffer, et modifier les raccourcis clavier.
 </panel_attributes>
@@ -57,8 +58,8 @@ Fonctions permettant de configurer le Buffer, et modifier les raccourcis clavier
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>960</x>
-      <y>530</y>
+      <x>940</x>
+      <y>450</y>
       <w>100</w>
       <h>60</h>
     </coordinates>
@@ -70,21 +71,21 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>870</x>
-      <y>540</y>
-      <w>110</w>
+      <x>840</x>
+      <y>460</y>
+      <w>120</w>
       <h>50</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
+    <panel_attributes>lt=.&gt;
 Intéragit
 avec</panel_attributes>
-    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>960</x>
-      <y>230</y>
+      <x>950</x>
+      <y>250</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -96,50 +97,23 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>870</x>
-      <y>230</y>
-      <w>110</w>
+      <x>850</x>
+      <y>250</y>
+      <w>120</w>
       <h>50</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
+    <panel_attributes>lt=.&gt;
 Intéragit
 avec</panel_attributes>
-    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>550</y>
-      <w>200</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-Affiche le contenu
-Et appelle les
-fonctions d'écriture</panel_attributes>
-    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>480</x>
-      <y>240</y>
-      <w>210</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-Récupère les
-raccourcis</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>650</x>
-      <y>110</y>
+      <x>630</x>
+      <y>160</y>
       <w>430</w>
-      <h>560</h>
+      <h>410</h>
     </coordinates>
     <panel_attributes>Modèle
 --
@@ -149,10 +123,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>270</x>
-      <y>100</y>
+      <x>230</x>
+      <y>160</y>
       <w>250</w>
-      <h>560</h>
+      <h>410</h>
     </coordinates>
     <panel_attributes>Vue
 --
@@ -162,10 +136,10 @@ bg=green</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>290</x>
-      <y>160</y>
+      <x>250</x>
+      <y>230</y>
       <w>210</w>
-      <h>190</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>module Menu
 --
@@ -179,13 +153,65 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>390</x>
-      <y>340</y>
+      <x>450</x>
+      <y>260</y>
+      <w>220</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+Récupère les
+raccourcis</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>300</y>
       <w>70</w>
-      <h>140</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
-Affiche</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+include</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>470</y>
+      <w>220</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+Affiche le contenu
+Et appelle les
+fonctions d'écriture</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>680</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Vilain
+--
+fonction main</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>530</y>
+      <w>120</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+include</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0;100.0;150.0</additional_attributes>
   </element>
 </diagram>
