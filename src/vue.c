@@ -88,7 +88,7 @@ void lancer () {
   haut = subwin(stdscr, 3 , COLS, 0, 0);
   //Dessine les bordures de la fenêtre
   box(haut, ACS_VLINE, ACS_HLINE);
-  mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d, curchar %d, dernier %d" "control %c", buff->posY, buff->posX, buff->cur_char, buff->dernier, control[3]);
+  mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d", buff->posY, buff->posX);
   //Activer la molette de la souris dans la fenêtre écriture
   scrollok(bas, TRUE);
   //Actualise les deux fenêtres
@@ -361,7 +361,7 @@ void lancer () {
     
     wclear(haut);
     box(haut, ACS_VLINE, ACS_HLINE);
-    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d, curchar %d, dernier %d, control %c", buff->posY, buff->posX, buff->cur_char, buff->dernier, control[3]);
+    mvwprintw(haut, 1, 1, "Press # to exit. Line %d, Column %d", buff->posY, buff->posX);
     wrefresh(haut);
     wrefresh(bas);
   }
