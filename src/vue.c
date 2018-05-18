@@ -177,12 +177,12 @@ void lancer () {
       index = 0;
       int min = curChar;
       int max	= buff->cur_char;
-      int tmpmin = min;
+      
       if(curChar > buff->cur_char){
 	max = curChar;
 	min = buff->cur_char;
       }
-	
+      int tmpmin = min;
       while(tmpmin < max){
 	tmp[index] = *(buff->contenu + tmpmin);
 	tmpmin++;
