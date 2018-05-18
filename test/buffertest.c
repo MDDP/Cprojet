@@ -281,15 +281,16 @@ END_TEST
 
 START_TEST(test_suppr_buff4)
 {
-  buffer * buff = initialisation(20,10);
+  buffer * buff = initialisation(10,10);
   char *aEcrire = "Vige";
   for (int i = 0; i < strlen(aEcrire); i++)
-    insertion(*(aEcrire+i), buff);
-  char ret = deplacerA(0, buff);
+    ecrire(*(aEcrire+i), buff);
+  deplacerA(0, buff);
+  supprimer(buff);
   
 	ck_assert_msg (
 		strcmp(buff->contenu, "ige") == 0,
-		"Attendu : [%s], reçu: [%s] et [%c]", "ige", buff->contenu, ret
+		"Attendu : [%s] , reçu: [%s]", "ige", buff->contenu
 	);
 }
 END_TEST
