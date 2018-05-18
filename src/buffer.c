@@ -123,6 +123,7 @@ int insertion (char c, buffer *buff) {
   //de même qu'au dessus, sauf qu'on va déplacer la mémoire d'un octet
   char *pointeur_tmp = buff->contenu+buff->cur_char;
   memmove(pointeur_tmp+1, pointeur_tmp, buff->dernier-buff->cur_char);
+  //pour ensuite écrire
   *(pointeur_tmp) = c;
   buff->cur_char++;
   buff->dernier += 1;
@@ -132,9 +133,13 @@ int insertion (char c, buffer *buff) {
 
 char supprimer (buffer *buff) {
   char ret = *(buff->contenu+buff->cur_char);
-  memmove(buff->contenu + buff->cur_char,  buff->contenu + buff->cur_char+1,  buff->dernier - buff->cur_char);
+  char *pointeur_tmp = buff->contenu+buff->cur_char;
+  //on déplace les caractères d'un octet, ce qui va écraser le caractère en position courante
+  memmove(pointeur_tmp, pointeur_tmp+1, buff->dernier-buff->cur_char);
+  //On réinitalise le dernier caractère pour éviter des soucis
   buff->contenu[buff->dernier] = '\0';
   buff->dernier--;
+  //on diminue la taille en mémoire du buffer si la mémoire utilisée est trop faible
   if (buff->taille > 10 && buff->dernier < buff->taille/2) reduire(buff);
   return ret;
 }
@@ -143,7 +148,7 @@ int sauvegarde (buffer *buff, char *filename) {
   FILE *f = fopen(filename, "w");
   if (f != NULL) {
     char *contenu = buff->contenu;
-    //Rajout du '\0' pour écrire contenu dans f
+    //Rajout du '\0' pour écrire contenu dans f - au cas où
     *(contenu + buff->dernier) = '\0';
     fputs(contenu, f);
     fclose(f);
@@ -157,6 +162,7 @@ int chargement (buffer *buff, char *filename) {
   if (f != NULL) {
     char c = fgetc(f);
     while (c != EOF) {
+      //on écrit tout simplement les caractères récupéres dans le buffer
       ecrire(c, buff);
       c = fgetc(f);
     }
