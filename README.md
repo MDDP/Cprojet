@@ -7,11 +7,12 @@ Anthony Aillerie
 ```
 
 # Répertoire Git
+```
 ssh :	git@moule.informatique.univ-paris-diderot.fr:debois/conduite-projet.git
-
 	git@github.com:MDDP/Cprojet.git
 	
 hhtp :	http://moule.informatique.univ-paris-diderot.fr:8080/debois/conduite-projet.git
+```
 
 # Notes sur le projet
 La documentation des fonctions se trouve dans les fichiers en-tête et est délimitée par un
