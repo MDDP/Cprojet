@@ -1,4 +1,5 @@
 # Conduite projet 2018 - VIlain
+Projet réalisé dans le cadre du cours de Conduite Projet 2018 à l'Université Paris 7 Diderot
 Mael Debois
 Christophe Lamy-Verdin
 Anthony Aillerie
@@ -11,7 +12,7 @@ hhtp :	http://moule.informatique.univ-paris-diderot.fr:8080/debois/conduite-proj
 # Notes sur le projet
 La documentation des fonctions se trouve dans les fichiers en-tête et est délimitée par un
 /*
- * ...
+ \* ...
  */
  
 Extension implémentée
