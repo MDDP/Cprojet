@@ -11,9 +11,11 @@ hhtp :	http://moule.informatique.univ-paris-diderot.fr:8080/debois/conduite-proj
 
 # Notes sur le projet
 La documentation des fonctions se trouve dans les fichiers en-tête et est délimitée par un
-/\*
+```
+/*
  * ...
  */
+ ```
  
 Extension implémentée
 	Menu
