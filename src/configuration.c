@@ -4,7 +4,7 @@ void actualiseConfig (char control[]) {
   FILE *config = fopen("config.cfg","r");
   //cas d'erreur
   if (config == NULL) {
-     printf("Le fichier config.cdg est absent!")
+     printf("Le fichier config.cdg est absent!");
      return;
   }
   for(int i = 0; i < NBCONFIG; i++){
