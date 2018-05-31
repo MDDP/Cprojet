@@ -1,8 +1,12 @@
 # Conduite projet 2018 - VIlain
 Projet réalisé dans le cadre du cours de Conduite Projet 2018 à l'Université Paris 7 Diderot
+
 Mael Debois
+
 Christophe Lamy-Verdin
+
 Anthony Aillerie
+
 
 # Répertoire Git
 ssh :	git@moule.informatique.univ-paris-diderot.fr:debois/conduite-projet.git
